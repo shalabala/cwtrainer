@@ -1,2 +1,2 @@
 # cwtrainer
-A program to learn CW aka Morse code
+A CLI program to learn CW aka Morse code. 
