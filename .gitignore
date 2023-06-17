@@ -4,6 +4,7 @@
 #vscode
 .vscode/
 
+/build/.cmake/*
 # Compiled Object files
 *.slo
 *.lo
