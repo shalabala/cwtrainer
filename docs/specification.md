@@ -34,7 +34,8 @@ Die früher angesprochenen Schwierigkeitsstufen haben die folgenden Bedeutungen:
 Jede Stufe (au$er der easy-Stufe) hat eine entsprechende Wörterbuchdatei, die neben dem ausführbaren File liegt, und hat eine ".dic" Dateierweiterung. In dieser sind die Wörter/Sätze enthalten, die der User begegnen kann.
 
 ## Hilfe option
-Wenn der Benutzer die Hilfetaste drückt (H) 
+Wenn der Benutzer die Hilfetaste drückt (H) wird das nächste Wort in Morse abgespielt.
+? Hier könnten wir auch eine Funktion implementieren, wobei der Benutzer nur den nächsten Buchstaben abspielen kann.
 
 ## Unterstützte Betriebssysteme
 Der Code kann sowohl für Windows, als auch für Linux kompiliert werden.
