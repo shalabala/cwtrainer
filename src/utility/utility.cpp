@@ -1,19 +1,30 @@
 #include "utility.h"
-#include<vector>
+#include <vector>
 
 namespace cwUtility
 {
-
-    std::size_t ElementwiseHasher<T>::operator()(const std::vector<T> &s) const noexcept
+    unsigned int upper_power_of_two(unsigned int v)
     {
-        std::size_t hash = 0;
-        std::size_t p = 5;
-        for (auto &&a : s)
-        {
-            hash = (hash + a) * p;
-            p <<= 1;
-        }
-        return hash;
+        v--;
+        v |= v >> 1;
+        v |= v >> 2;
+        v |= v >> 4;
+        v |= v >> 8;
+        v |= v >> 16;
+        v++;
+        return v;
     }
 
+    // template <typename T>
+    // std::size_t ElementwiseHasher::operator()(const std::vector<T> &s) const noexcept
+    // {
+    //     std::size_t hash = 0;
+    //     std::size_t p = s.size() * 3;
+    //     std::hash<T> hasher;
+    //     for (auto &&a : s)
+    //     {
+    //         hash = (hash + hasher(a)) * p;
+    //     }
+    //     return hash;
+    // }
 }

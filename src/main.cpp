@@ -1,6 +1,10 @@
 #include "SDL.h"
 #include "SDL_audio.h"
+#include "morse/morse-types.h"
+#include "morse/morse-alphabet.h"
+#include "morse/morse-translator.h"
 #include <queue>
+#include <iostream>
 #include <cmath>
 
 const int AMPLITUDE = 28000;
@@ -159,28 +163,42 @@ void audio_callback(void *_beeper, Uint8 *_stream, int _length)
     beeper->generateSamples(stream, length);
 }
 
-int calculateDurationFromBeats(int beats, int bpm){
-    double milisecPerBeat = (60.0*1000.0)/bpm;
-    double milisecs = milisecPerBeat*beats*2;
+int calculateDurationFromBeats(int beats, int bpm)
+{
+    double milisecPerBeat = (60.0 * 1000.0) / bpm;
+    double milisecs = milisecPerBeat * beats * 2;
     return static_cast<int>(std::ceil(milisecs));
 }
 
-int main(int argc, char *argv[])
+int beeper_test(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_AUDIO);
 
     int duration = 1000;
-    int bpmDot= 500;
+    int bpmDot = 500;
     int bpmDash = 200;
     double Hz = 850;
 
     Beeper b;
-    //b.beep(Hz, duration);
-    b.recurringBeep(Hz, calculateDurationFromBeats(3,bpmDot), bpmDot);
-    b.recurringBeep(Hz, calculateDurationFromBeats(3,bpmDash), bpmDash);
-    b.recurringBeep(Hz, calculateDurationFromBeats(3,bpmDot), bpmDot);
+    // b.beep(Hz, duration);
+    b.recurringBeep(Hz, calculateDurationFromBeats(3, bpmDot), bpmDot);
+    b.recurringBeep(Hz, calculateDurationFromBeats(3, bpmDash), bpmDash);
+    b.recurringBeep(Hz, calculateDurationFromBeats(3, bpmDot), bpmDot);
 
     b.wait();
+
+    return 0;
+}
+
+int main()
+{
+    morse::MorseAlphabet alphabet;
+    for (char c = 'A'; c <= 'Z'; ++c)
+    {
+        const morse::MorseString &letter = alphabet.translateLetter(c);
+        char retranslate = alphabet.translateLetter(letter);
+        std::cout << c << ": " << letter << " : " << retranslate << std::endl;
+    }
 
     return 0;
 }
