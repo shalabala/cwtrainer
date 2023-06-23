@@ -9,75 +9,82 @@ namespace morse
      */
     enum MorseSymbol
     {
-        //     /**End of morse text
-        //      *
-        //      */
-        //     letterEnd = 0,
-        /**Single unit morse sign
-         *
+        /**End of morse text
+         * Terminal symbol in all contexts.
          */
-        dot = 1,
-        /**Morse sign that is equivalent in length with 3 dots
-         *
-         */
-        dash,
-        /**pause between letters, equivalent silence of 3 dots
-         *
-         */
-        letterEnd,
+        textEnd,
+
         /**pause between words, equivalent silence of 7 dots
-         *
+         * Terminal symbol in some contexts
          */
+
         wordEnd,
 
+        /**pause between letters, equivalent silence of 3 dots
+         * Terminal symbol in some contexts.
+         */
+        letterEnd,
+
+        /**Single unit morse sign
+         * In comparisons, all symbols with value >=dot are non terminal symbols,
+         * all symbols with <dot are terminal symbols
+         */
+        dot,
+
+        /**Morse sign that is equivalent in length of 3 dots
+         */
+        dash,
     };
 
-    /**type that is used to iterate over a
+    /**type that is used to iterate over a MorseString
      *
      */
-    typedef std::vector<MorseSymbol>::iterator MorseStringIterator;
+    typedef std::vector<MorseSymbol>::const_iterator MorseStringIterator;
 
     /**string of morse symbols
      *
      */
     typedef std::vector<MorseSymbol> MorseString;
 
-    const MorseString MORSE_LETTER_A = {dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_B = {dash, dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_C = {dash, dot, dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_D = {dash, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_E = {dot, letterEnd};
-    const MorseString MORSE_LETTER_F = {dot, dot, dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_G = {dash, dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_H = {dot, dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_I = {dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_J = {dot, dash, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_K = {dash, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_L = {dot, dash, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_M = {dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_N = {dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_O = {dash, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_P = {dot, dash, dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_Q = {dash, dash, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_R = {dot, dash, dot, letterEnd};
-    const MorseString MORSE_LETTER_S = {dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_T = {dash, letterEnd};
-    const MorseString MORSE_LETTER_U = {dot, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_V = {dot, dot, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_W = {dot, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_X = {dash, dot, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_Y = {dash, dot, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_Z = {dash, dash, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_0 = {dash, dash, dash, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_1 = {dot, dash, dash, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_2 = {dot, dot, dash, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_3 = {dot, dot, dot, dash, dash, letterEnd};
-    const MorseString MORSE_LETTER_4 = {dot, dot, dot, dot, dash, letterEnd};
-    const MorseString MORSE_LETTER_5 = {dot, dot, dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_6 = {dash, dot, dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_7 = {dash, dash, dot, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_8 = {dash, dash, dash, dot, dot, letterEnd};
-    const MorseString MORSE_LETTER_9 = {dash, dash, dash, dash, dot, letterEnd};
+    const MorseString morseLetterA = {dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterB = {dash, dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterC = {dash, dot, dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterD = {dash, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterE = {dot, letterEnd, textEnd};
+    const MorseString morseLetterF = {dot, dot, dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterG = {dash, dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterH = {dot, dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterI = {dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterJ = {dot, dash, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetterK = {dash, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterL = {dot, dash, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterM = {dash, dash, letterEnd, textEnd};
+    const MorseString morseLetterN = {dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterO = {dash, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetterP = {dot, dash, dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterQ = {dash, dash, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterR = {dot, dash, dot, letterEnd, textEnd};
+    const MorseString morseLetterS = {dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetterT = {dash, letterEnd, textEnd};
+    const MorseString morseLetterU = {dot, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterV = {dot, dot, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterW = {dot, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetterX = {dash, dot, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetterY = {dash, dot, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetterZ = {dash, dash, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetter0 = {dash, dash, dash, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetter1 = {dot, dash, dash, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetter2 = {dot, dot, dash, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetter3 = {dot, dot, dot, dash, dash, letterEnd, textEnd};
+    const MorseString morseLetter4 = {dot, dot, dot, dot, dash, letterEnd, textEnd};
+    const MorseString morseLetter5 = {dot, dot, dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetter6 = {dash, dot, dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetter7 = {dash, dash, dot, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetter8 = {dash, dash, dash, dot, dot, letterEnd, textEnd};
+    const MorseString morseLetter9 = {dash, dash, dash, dash, dot, letterEnd, textEnd};
+
+    /**Size of longest morse letters, without letter separator*/
+    const int longestLetterLength = 5;
 
     /**Hasher for morse strings*/
     struct MorseStringHasher
@@ -85,8 +92,22 @@ namespace morse
         /**create hash*/
         std::size_t operator()(const MorseString &s) const noexcept;
     };
+
+    struct MorseStringIteratorHasher
+    {
+        /**create hash*/
+        std::size_t operator()(const MorseStringIterator &s) const noexcept;
+    };
+
+    std::string convertMorseSymbolToString(MorseSymbol sym);
+
+    std::string convertMorseStringToString(const MorseStringIterator &str);
+
+    std::string convertMorseStringToString(const MorseString &str);
 } // namespace morse
 
-std::ostream &operator<<(std::ostream& outStream, const morse::MorseString &mstring);
+std::ostream &operator<<(std::ostream &outStream, const morse::MorseString &mstring);
+
+std::ostream &operator<<(std::ostream &outStream, const morse::MorseStringIterator &mstring);
 
 #endif

@@ -1,9 +1,9 @@
 #include "utility.h"
 #include <vector>
 
-namespace cwUtility
+namespace cw_utility
 {
-    unsigned int upper_power_of_two(unsigned int v)
+    unsigned int upperPowerOfTwo(unsigned int v)
     {
         v--;
         v |= v >> 1;

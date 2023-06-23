@@ -6,13 +6,22 @@ Das Dokument basiert auf einem anderen Dokument von Google, obwohl es ist mögli
 
 ## Kommentierung des Codes
 Folgende Dinge müssen unbedingt mit Kommentaren ausgerüstet werden:
-- Klassen und Strukturen
-    - alle "public" Konstruktoren, Members, Methoden einer klasse
-- Enumtypen
-    - Mögliche Werte der Enum
-- in der Headerdatei angegebene Funktionen
-- Komplexer Code
+- Dokumentierung (d.H /***/ drei Sterne Kommentare)
+    - Klassen und Strukturen
+        - alle "public" Konstruktoren, Members, Methoden einer klasse
+    - Enumtypen
+        - Alle Werte der Enum
+    - Alle, in einer Headerdatei angegebenen Funktionen
+
+- Normale (// oder /**/) Kommentare
+    - Komplexer Code
 
 Die Kommentierung ist in der regel auf English, sowie die Namen der Typen und Variablen.
+
+## Namenskonventionen
+- Alle variablen, Enum-werte, Methoden sowie Funktionen und Konstante werden mit camelCase benannt.
+- Typennamen verwenden PascalCase
+- Namen von Namespaces verwenden snake_case
+- Compiler-direktiven verwenden CONSTANT_CASE
 
 

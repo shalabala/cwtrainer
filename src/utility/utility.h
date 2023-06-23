@@ -3,13 +3,13 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
-namespace cwUtility
+namespace cw_utility
 {
 
     /**For the given number returns the next 2-power in constant time
      *
      */
-    unsigned int upper_power_of_two(unsigned int v);
+    unsigned int upperPowerOfTwo(unsigned int v);
 
     /**Elementwise hashing for vectors*/
    

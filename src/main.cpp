@@ -195,10 +195,16 @@ int main()
     morse::MorseAlphabet alphabet;
     for (char c = 'A'; c <= 'Z'; ++c)
     {
-        const morse::MorseString &letter = alphabet.translateLetter(c);
+        const morse::MorseStringIterator &letter = alphabet.translateLetter(c);
         char retranslate = alphabet.translateLetter(letter);
         std::cout << c << ": " << letter << " : " << retranslate << std::endl;
     }
+
+    morse::MorseTranslate translate(alphabet);
+
+    morse::MorseString translation = translate.translate("Hello vilag");
+
+    std::cout << translation << std::endl;
 
     return 0;
 }
