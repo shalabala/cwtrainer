@@ -202,9 +202,14 @@ int main()
 
     morse::MorseTranslate translate(alphabet);
 
-    morse::MorseString translation = translate.translate("Hello vilag");
+    morse::MorseString translationToMorse = translate.translateTextToMorse("Hello vilag");
 
-    std::cout << translation << std::endl;
+    std::cout << translationToMorse << std::endl;
+    
+    std::string translationToText = translate.translateMorseToText(".... . .-.. .-.. --- /...- .. .-.. .- --.");
 
+    std::cout << translationToText << std::endl;
+
+    
     return 0;
 }

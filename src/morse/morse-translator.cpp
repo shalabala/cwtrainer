@@ -1,4 +1,5 @@
 #include "morse-translator.h"
+#include "morse-types.h"
 #include <string>
 
 namespace morse
@@ -7,29 +8,40 @@ namespace morse
     {
     }
 
-    std::string MorseTranslate::translate(const MorseString &symbols) const
+    std::string MorseTranslate::translateMorseToText(const MorseString &symbols) const
     {
-        return translate(symbols.begin());
+        return translateMorseToText(symbols.begin());
     }
 
-    std::string MorseTranslate::translate(const MorseStringIterator &symbols) const
+    std::string MorseTranslate::translateMorseToText(const MorseStringIterator &symbols) const
     {
         std::string translatedString("");
         MorseStringIterator iterator = symbols;
-        while (*iterator >= dot)
+        while (*iterator != textEnd)
         {
-            char letter = alphabet.translateLetter(iterator);
-            translatedString += letter;
-            while (*iterator != letterEnd)
+            while (isBeep(*iterator))
+            {
+                char letter = alphabet.translateLetter(iterator);
+                translatedString += letter;
+                while (isBeep(*iterator))
+                {
+                    ++iterator;
+                }
+            }
+            if (*iterator == wordEnd)
+            {
+                translatedString += ' ';
+                ++iterator;
+            }
+            else if (*iterator == letterEnd)
             {
                 ++iterator;
             }
-            ++iterator;
         }
         return std::move(translatedString);
     }
 
-    MorseString MorseTranslate::translate(const std::string text) const
+    MorseString MorseTranslate::translateTextToMorse(const std::string text) const
     {
         MorseString s;
         for (auto &&i : text)
@@ -41,9 +53,11 @@ namespace morse
             else
             {
                 MorseStringIterator iterator = alphabet.translateLetter(i);
-                for (; *iterator != textEnd; ++iterator){
+                for (; *iterator != textEnd; ++iterator)
+                {
                     s.push_back(*iterator);
                 }
+                s.push_back(letterEnd);
             }
         }
         return std::move(s);

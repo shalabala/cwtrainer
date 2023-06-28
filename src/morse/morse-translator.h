@@ -9,9 +9,9 @@ namespace morse
     {
     public:
         MorseTranslate(const MorseAlphabet &morseAlphabet);
-        std::string translate(const MorseString &symbols) const;
-        std::string translate(const MorseStringIterator &symbols) const;
-        MorseString translate(const std::string text) const;
+        std::string translateMorseToText(const MorseString &symbols) const;
+        std::string translateMorseToText(const MorseStringIterator &symbols) const;
+        MorseString translateTextToMorse(const std::string text) const;
 
     private:
         MorseAlphabet alphabet;

@@ -2,76 +2,36 @@
 #include <iostream>
 namespace morse
 {
-    std::size_t MorseStringIteratorHasher::operator()(const MorseStringIterator &s) const noexcept
+    std::size_t MorseLetterHasher::operator()(const MorseStringIterator &s) const noexcept
     {
         std::size_t hash = 0;
-        std::size_t p = 7;
+        std::size_t p = 47;
         std::hash<MorseSymbol> hasher;
-        for (MorseStringIterator element = s; *element >= dot; element++)
+        MorseStringIterator element = s;
+        for (; isBeep(*element); ++element)
         {
             hash = (hash + hasher(*element)) * p;
         }
         return hash;
     }
 
-    std::size_t MorseStringHasher::operator()(const MorseString &s) const noexcept
+    bool MorseLetterEquals::operator()(const MorseStringIterator &lhs, const MorseStringIterator &rhs) const noexcept
     {
-        std::size_t hash = 0;
-        std::size_t p = 7;
-        std::hash<MorseSymbol> hasher;
-        for (auto &&a : s)
+        MorseStringIterator rhsElement = rhs;
+        MorseStringIterator lhsElement = lhs;
+        for (; isBeep(*rhsElement) && isBeep(*lhsElement); ++rhsElement, ++lhsElement)
         {
-            hash = (hash + hasher(a)) * p;
+            if(*rhsElement != *lhsElement){
+                return false;
+            }
         }
-        return hash;
+        return true;
     }
 
-    std::string convertMorseSymbolToString(MorseSymbol sym)
-    {
-        switch (sym)
-        {
-        case morse::dot:
-            return ".";
-            break;
-        case morse::dash:
-            return "-";
-            break;
-        case morse::letterEnd:
-            return " ";
-            break;
-        case morse::wordEnd:
-            return "   ";
-            break;
-        default:
-            return "";
-            break;
-        }
-    }
-
-    std::string convertMorseStringToString(const MorseStringIterator &str)
-    {
-        std::string s;
-        for (MorseStringIterator iterator = str; *iterator != textEnd; ++iterator)
-        {
-            std::string symbolTranslation = convertMorseSymbolToString(*iterator);
-            s.append(symbolTranslation);
-        }
-        return std::move(s);
-    }
-
-    std::string convertMorseStringToString(const MorseString &str)
-    {
-        return convertMorseStringToString(str.begin());
-    }
 }
-std::ostream &operator<<(std::ostream &outStream, const morse::MorseString &mstring)
-{
-    outStream << morse::convertMorseStringToString(mstring);
-    return outStream;
-}
-
 std::ostream &operator<<(std::ostream &outStream, const morse::MorseStringIterator &iterator)
 {
-    outStream << morse::convertMorseStringToString(iterator);
+    for(morse::MorseStringIterator modifiableIterator = iterator; *modifiableIterator != morse::textEnd; ++modifiableIterator)
+    outStream << *modifiableIterator;
     return outStream;
 }

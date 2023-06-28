@@ -21,7 +21,7 @@ namespace morse
 
     private:
         std::unordered_map<char, MorseStringIterator> charToMorse;
-        std::unordered_map<MorseStringIterator, char, MorseStringIteratorHasher> morseToChar;
+        std::unordered_map<MorseStringIterator, char, MorseLetterHasher, MorseLetterEquals> morseToChar;
     };
     
 }
