@@ -23,10 +23,11 @@ aux_source_directory("../src/utility" UTILITY)
 add_library(utility STATIC ${UTILITY})
 target_include_directories(utility PUBLIC "../src/utility") 
 
-
 #executable
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(cwtrainer ../src/main.cpp)
+
+#tests
 
 # link libraries
 target_link_libraries(morse PUBLIC utility)

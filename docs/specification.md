@@ -46,7 +46,10 @@ Die folgende Schritte könnten eingeleitet werden, um das Programm noch besser z
 - Dem Programm eine Grafikschnittstelle zu geben.
 
 ## Verwendete Technologien - steht unter Bearbeitung noch
-- eine (zwei) Bibliothek(en), um Töne zu erzeugen
+- SDL2 um töne zu erzeugen
+- SDL2 um keyboard Events abzufangen
+- GoogleTests für Unit Testing
+
 - eine Bibliothek um Logging zu betreiben
 - eine Bibliothek um Konfigurationsdateien zu lesen
 
