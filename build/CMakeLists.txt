@@ -12,6 +12,11 @@ add_library(morse STATIC ${MORSE})
 target_include_directories(morse PUBLIC "../src/morse")
 target_compile_features(morse PUBLIC cxx_std_11)
 
+#beeper
+aux_source_directory("../src/beeper" BEEPER)
+add_library(beeper STATIC ${BEEPER})
+target_include_directories(beeper PUBLIC "../src/beeper")
+target_compile_features(beeper PUBLIC cxx_std_11)
 
 #utilities
 aux_source_directory("../src/utility" UTILITY)
@@ -25,5 +30,6 @@ add_executable(cwtrainer ../src/main.cpp)
 
 # link libraries
 target_link_libraries(morse PUBLIC utility)
-target_link_libraries(cwtrainer PUBLIC ${SDL2_LIBRARIES} morse utility)
+target_link_libraries(beeper PUBLIC morse ${SDL2_LIBRARIES})
+target_link_libraries(cwtrainer PUBLIC ${SDL2_LIBRARIES} morse utility beeper)
 
