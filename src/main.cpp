@@ -9,19 +9,24 @@
 #include <cmath>
 #include <memory>
 
-const int FREQ = 800;
+const int FREQ = 550;
 const int AMPLITUDE = 28000;
 
 int main()
 {
-    std::unique_ptr<beeper::IBeeper> beeper = std::make_unique<beeper::Beeper>(FREQ, AMPLITUDE, 80);
+    std::cout << "Please enter a text to be translated! ";
+    std::string s;
+    std::getline(std::cin, s);
+
+    std::unique_ptr<beeper::IBeeper> beeper = std::make_unique<beeper::Beeper>(FREQ, AMPLITUDE, 60);
     morse::MorseAlphabet alphabet;
     morse::MorseTranslate translator(alphabet);
 
-    std::cout << "Geben Sie einen Text ein! ";
-    std::string s;
-    std::cin >> s;
+    morse::MorseString translation = translator.translateTextToMorse(s);
 
-    
-    std::cout << std::endl;
+    std::cout << "The translation is: "<< translation << std::endl;
+
+    beeper->schedule(translation);
+    beeper->wait();
 }
+

@@ -63,7 +63,7 @@ namespace beeper
          */
         const int dotDurationMS;
 
-        /** Number of generated samples so far (modulary counted)
+        /** Number of generated samples so far (reset after each beep to 0)
          *
          */
         int t;

@@ -4,8 +4,7 @@
 #include "SDL_audio.h"
 #include "../morse/morse-types.h"
 namespace beeper
-{  
-
+{
 
     Beeper::Beeper(int freq, int amplitude, int dotDurationMS) : freq(freq),
                                                                  amplitude(amplitude),
@@ -78,7 +77,8 @@ namespace beeper
 
         while (i < length)
         {
-            if(isConstantBeepOn){
+            if (isConstantBeepOn)
+            {
                 while (i < length)
                 {
                     stream[i] = getInstantaneousAmplitude(freq);
@@ -93,26 +93,29 @@ namespace beeper
                     i++;
                 }
             }
-            else if (beeps.empty())
+            else
             {
+                if (beeps.empty())
+                {
 
-                addBeeps();
-            }
+                    addBeeps();
+                }
 
-            Beep &bo = beeps.front();
+                Beep &bo = beeps.front();
 
-            int samplesToDo = std::min(i + bo.samplesLeft, length);
-            bo.samplesLeft -= samplesToDo - i;
-            while (i < samplesToDo)
-            {
-                stream[i] =  getInstantaneousAmplitude(bo.freq);
-                ++i;
-            }
+                int samplesToDo = std::min(i + bo.samplesLeft, length);
+                bo.samplesLeft -= samplesToDo - i;
+                while (i < samplesToDo)
+                {
+                    stream[i] = getInstantaneousAmplitude(bo.freq);
+                    ++i;
+                }
 
-            if (bo.samplesLeft == 0)
-            {
-                beeps.pop();
-                t = 0;
+                if (bo.samplesLeft == 0)
+                {
+                    beeps.pop();
+                    t = 0;
+                }
             }
         }
     }
