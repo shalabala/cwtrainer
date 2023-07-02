@@ -1,0 +1,3 @@
+#ifndef MORSE_EXCEPTION_H
+#define MORSE_EXCEPTION_H
+#endif
