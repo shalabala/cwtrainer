@@ -9,8 +9,8 @@
 #include <cmath>
 #include <memory>
 
-const int FREQ = 550;
-const int AMPLITUDE = 28000;
+const int freq = 550;
+const int amplitude = 28000;
 
 int main()
 {
@@ -18,7 +18,7 @@ int main()
     std::string s;
     std::getline(std::cin, s);
 
-    std::unique_ptr<beeper::IBeeper> beeper = std::make_unique<beeper::Beeper>(FREQ, AMPLITUDE, 60);
+    std::unique_ptr<beeper::IBeeper> beeper = std::make_unique<beeper::Beeper>(freq, amplitude, 55);
     morse::MorseAlphabet alphabet;
     morse::MorseTranslate translator(alphabet);
 

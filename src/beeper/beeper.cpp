@@ -114,7 +114,7 @@ namespace beeper
                 if (bo.samplesLeft == 0)
                 {
                     beeps.pop();
-                    t = 0;
+                    t %= sampling;
                 }
             }
         }

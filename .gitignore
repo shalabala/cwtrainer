@@ -55,6 +55,6 @@ _deps
 *-prefix/
 
 #executable
-build/cwtrainer
+build/cwtrainer*
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake

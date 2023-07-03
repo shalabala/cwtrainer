@@ -49,6 +49,7 @@ namespace morse
             if (i == ' ')
             {
                 s.push_back(wordEnd);
+                s.push_back(letterEnd);
             }
             else
             {
@@ -60,6 +61,8 @@ namespace morse
                 s.push_back(letterEnd);
             }
         }
+
+        s.pop_back();
         return std::move(s);
     }
 }
