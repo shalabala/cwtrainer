@@ -1,32 +1,12 @@
-#include "SDL.h"
-#include "SDL_audio.h"
-#include "morse/morse-types.h"
-#include "beeper.h"
-#include "morse/morse-alphabet.h"
-#include "morse/morse-translator.h"
-#include <queue>
-#include <iostream>
-#include <cmath>
-#include <memory>
+#include "display/main_window.h"
 
-const int freq = 550;
-const int amplitude = 28000;
 
-int main()
+int main(int argc, char **argv)
 {
-    std::cout << "Please enter a text to be translated! ";
-    std::string s;
-    std::getline(std::cin, s);
+    QApplication app(argc, argv);
+    display::MainWindow window;
 
-    std::unique_ptr<beeper::IBeeper> beeper = std::make_unique<beeper::Beeper>(freq, amplitude, 55);
-    morse::MorseAlphabet alphabet;
-    morse::MorseTranslate translator(alphabet);
+    window.show();
 
-    morse::MorseString translation = translator.translateTextToMorse(s);
-
-    std::cout << "The translation is: "<< translation << std::endl;
-
-    beeper->schedule(translation);
-    beeper->wait();
+    return app.exec();
 }
-

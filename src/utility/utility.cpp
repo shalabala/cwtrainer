@@ -1,5 +1,7 @@
 #include "utility.h"
 #include <vector>
+#include <cstdint>
+#include <chrono>
 
 namespace cw_utility
 {
@@ -15,16 +17,14 @@ namespace cw_utility
         return v;
     }
 
-    // template <typename T>
-    // std::size_t ElementwiseHasher::operator()(const std::vector<T> &s) const noexcept
-    // {
-    //     std::size_t hash = 0;
-    //     std::size_t p = s.size() * 3;
-    //     std::hash<T> hasher;
-    //     for (auto &&a : s)
-    //     {
-    //         hash = (hash + hasher(a)) * p;
-    //     }
-    //     return hash;
-    // }
+    int64_t getCurrentTimeInMillis()
+    {
+        using namespace std::chrono;
+        return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    }
+    
+    int64_t getElapsedMillisecondsSince(int64_t timestamp)
+    {
+        return getCurrentTimeInMillis() - timestamp;
+    }
 }

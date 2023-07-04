@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
+#include <cstdint>
 namespace cw_utility
 {
 
@@ -11,8 +12,15 @@ namespace cw_utility
      */
     unsigned int upperPowerOfTwo(unsigned int v);
 
-    /**Elementwise hashing for vectors*/
-   
+    /** Gets the current time in milliseconds since epoch
+     *
+     */
+    int64_t getCurrentTimeInMillis();
+
+    /** Time since the given timestamp
+     *
+     */
+    int64_t getElapsedMillisecondsSince(int64_t timestamp);
 
 } // namespace cwUtility
 
