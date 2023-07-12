@@ -1,5 +1,5 @@
-#ifndef BEEPER_TYPES_H
-#define BEEPER_TYPES_H
+#ifndef CWTRAINER_BEEPER_TYPES_H
+#define CWTRAINER_BEEPER_TYPES_H
 namespace beeper
 {
     struct Beep

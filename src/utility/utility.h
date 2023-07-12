@@ -1,5 +1,5 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#ifndef CWTRAINER_UTILITY_H
+#define CWTRAINER_UTILITY_H
 #include <unordered_map>
 #include <vector>
 #include <iostream>

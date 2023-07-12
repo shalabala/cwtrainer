@@ -1,5 +1,5 @@
-#ifndef MORSE_TYPES_H
-#define MORSE_TYPES_H
+#ifndef CWTRAINER_MORSE_TYPES_H
+#define CWTRAINER_MORSE_TYPES_H
 #include <vector>
 #include <iostream>
 #include <string>

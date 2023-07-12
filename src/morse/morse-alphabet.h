@@ -1,5 +1,5 @@
-#ifndef MORSE_ALPHABET_H
-#define MORSE_ALPHABET_H
+#ifndef CWTRAINER_MORSE_ALPHABET_H
+#define CWTRAINER_MORSE_ALPHABET_H
 #include <vector>
 #include <unordered_map>
 #include <string>

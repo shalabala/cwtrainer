@@ -29,8 +29,8 @@ Die Kommentierung ist in der regel auf English, sowie die Namen der Typen und Va
 ## Headerdateien
 Jede Headerdatei verfügt über Guards im folgenden Stil:
 ```
-#ifndef HEADER_FILE_NAME_H
-#define HEADER_FILE_NAME_H
+#ifndef CWTRAINER_HEADER_FILE_NAME_H
+#define CWTRAINER_HEADER_FILE_NAME_H
 
 //Inhalt der Datei ..
 

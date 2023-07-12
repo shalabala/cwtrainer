@@ -1,21 +1,22 @@
-#ifndef BEEPER_H
-#define BEEPER_H
+#ifndef CWTRAINER_BEEPER_H
+#define CWTRAINER_BEEPER_H
 #include "ibeeper.h"
 #include "../morse/morse-types.h"
+#include "../configuration/configuration.h"
 #include "beeper_types.h"
 #include "SDL.h"
 #include "SDL_audio.h"
 #include <queue>
+#include <memory>
 namespace beeper
 {
     class Beeper : public IBeeper
     {
     public:
-        /**Construct the beeper class. The first parameter specifies the frequency of the beeps,
-         * the second the amplitude, the third the unit length
+        /**Construct the beeper class. 
          *
          */
-        Beeper(int freq, int amplitude, int dotDurationMS);
+        Beeper(std::shared_ptr<configuration::Configuration> config);
 
         /**Turns a continuos beep on
          *
@@ -31,6 +32,11 @@ namespace beeper
          *
          */
         virtual void schedule(const morse::MorseString &s) override;
+
+        /**Clears the scheduled beeps;
+         *
+         */
+        virtual void clearSchedule() override;
 
         /**Waits until the scheduled queue is empty
          *

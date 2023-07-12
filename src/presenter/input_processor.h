@@ -1,5 +1,5 @@
-#ifndef INPUT_PROCESSOR
-#define INPUT_PROCESSOR
+#ifndef CWTRAINER_INPUT_PROCESSOR
+#define CWTRAINER_INPUT_PROCESSOR
 
 class InputProcessor{
     public:

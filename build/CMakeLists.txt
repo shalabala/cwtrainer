@@ -22,6 +22,12 @@ add_library(morse STATIC ${MORSE})
 target_include_directories(morse PUBLIC "../src/morse")
 target_compile_features(morse PUBLIC cxx_std_11)
 
+#------------config
+aux_source_directory("../src/configuration" CONFIG)
+add_library(configuration STATIC ${CONFIG})
+target_include_directories(configuration PUBLIC "../src/configuration")
+target_compile_features(configuration PUBLIC cxx_std_11)
+
 #------------display
 aux_source_directory("../src/display" DISPLAY)
 add_library(display STATIC ${DISPLAY})
@@ -52,9 +58,10 @@ add_executable(cwtrainer ../src/main.cpp)
 
 #------------link libraries
 target_link_libraries(morse PUBLIC utility)
+target_link_libraries(configuration PUBLIC utility)
 target_link_libraries(beeper PUBLIC morse ${SDL2_LIBRARIES})
-target_link_libraries(presenter PUBLIC beeper utility)
-target_link_libraries(display PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets)
+target_link_libraries(presenter PUBLIC beeper utility Qt5::Core configuration)
+target_link_libraries(display PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets beeper presenter)
 target_link_libraries(cwtrainer PUBLIC morse utility beeper presenter display ${SDL2_LIBRARIES} )
 
 
