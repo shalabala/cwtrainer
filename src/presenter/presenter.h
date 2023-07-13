@@ -14,17 +14,19 @@ namespace presenter
         Q_OBJECT
     public:
         Presenter(std::shared_ptr<configuration::Configuration> configuration);
-        InputState getInputState();
+        int getInputState();
     public slots:
         void slotSingleKeyPressed();
         void slotDotKeyPressed();
         void slotDashKeyPressed();
-        void slotKeyReleased();
+        void slotSingleKeyReleased();
+        void slotDotKeyReleased();
+        void slotDashKeyReleased();
         void slotMorseSymbolInputed(char s);
         void clearBeeper();
     private:
         beeper::Beeper beeper;
-        InputState state;
+        int state;
         std::shared_ptr<configuration::Configuration> configuration;
     };
 }

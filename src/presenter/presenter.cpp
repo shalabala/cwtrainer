@@ -20,32 +20,42 @@ namespace presenter
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
         connect(worker, &PresenterWorker::morseSymbolInputed, this, &Presenter::slotMorseSymbolInputed);
         connect(worker, &PresenterWorker::inputChanged, this, &Presenter::clearBeeper);
+        connect(worker, &PresenterWorker::sleep, thread, &QThread::sleep);
         thread->start();
     }
-    InputState Presenter::getInputState()
+    int Presenter::getInputState()
     {
         return state;
     }
     void Presenter::slotDashKeyPressed()
     {
-        state = dashKeyPressed;
+        state |= dashKeyPressed;
+    }
+    void Presenter::slotSingleKeyReleased()
+    {
+        if (state & singleKeyPressed)
+        {
+            beeper.beepOff();
+            state &= ~singleKeyPressed;
+        }
+    }
+    void Presenter::slotDotKeyReleased()
+    {
+        state &= ~dotKeyPressed;
+    }
+
+    void Presenter::slotDashKeyReleased()
+    {
+        state &= ~dashKeyPressed;
     }
     void Presenter::slotDotKeyPressed()
     {
-        state = dotKeyPressed;
+        state |= dotKeyPressed;
     }
     void Presenter::slotSingleKeyPressed()
     {
-        state = singleKeyPressed;
+        state |= singleKeyPressed;
         beeper.beepOn();
-    }
-    void Presenter::slotKeyReleased()
-    {
-        if (state == singleKeyPressed)
-        {
-            beeper.beepOff();
-        }
-        state = undefined;
     }
     void Presenter::slotMorseSymbolInputed(char s)
     {

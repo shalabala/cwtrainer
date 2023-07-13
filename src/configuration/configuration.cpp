@@ -4,7 +4,7 @@ namespace configuration
 {
     int Configuration::getDotLength()
     {
-        return 55;
+        return 150;
     }
     int Configuration::getDashLength()
     {

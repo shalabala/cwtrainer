@@ -21,40 +21,55 @@ namespace presenter
         {
             int64_t currentTime = cw_utility::getCurrentTimeInMillis();
             int64_t elapsed = currentTime - lastSymbolEmission;
-            InputState state = presenter->getInputState();
-            if (state == dotKeyPressed && elapsed >= (configuration->getDotLength() + configuration->getDotLength()))
+            int state = presenter->getInputState();
+            if (state == lastInputState)
             {
-                //std::cout << "dot key detected, ellapsed "+ elapsed <<std::endl;
-                emit morseSymbolInputed(morse::dot);
-                lastSymbolEmission = currentTime;
-            }
-            else if (state == dashKeyPressed && elapsed >= (configuration->getDashLength() + configuration->getDotLength()))
-            {
-                emit morseSymbolInputed(morse::dash);
-                lastSymbolEmission = currentTime;
-            }
-            if (state != lastInputState)
-            {
-                if (lastInputState == singleKeyPressed)
+                if ((state & dotKeyPressed) && elapsed >= (configuration->getDotLength() + configuration->getDotLength()))
                 {
+                    qDebug("dot key detected, elapsed %lld", elapsed);
+                    emit morseSymbolInputed(morse::dot);
+                    emit sleep(configuration->getDotLength() + configuration->getDotLength());
+                    lastSymbolEmission = currentTime;
+                }
+                else if ((state & dashKeyPressed) && elapsed >= (configuration->getDashLength() + configuration->getDotLength()))
+                {
+                    qDebug("dot dash detected, elapsed %lld", elapsed);
+                    emit morseSymbolInputed(morse::dash);
+                    lastSymbolEmission = currentTime;
+                }
+            }
+            else
+            {
+                if (lastInputState & singleKeyPressed)
+                {
+                    qDebug("single key detected, because of newkey, state %d  state before %d", state, lastInputState);
                     if (elapsed >= configuration->getDashThresholdLength())
                     {
-                        emit morseSymbolInputed(morse::dash);
+                        // emit morseSymbolInputed(morse::dash);
+                        qDebug("single key dash");
                     }
                     else
                     {
-                        emit morseSymbolInputed(morse::dot);
+                        // emit morseSymbolInputed(morse::dot);
+                        qDebug("single key dot");
                     }
+                    lastSymbolEmission = currentTime;
+
                 }
-                if (state == dashKeyPressed)
+                if (!(lastInputState & dotKeyPressed) && state & dotKeyPressed)
                 {
-                    emit morseSymbolInputed(morse::dash);
-                }
-                else if (state == dotKeyPressed)
-                {
+                    qDebug("dot key detected, because of newkey, state %d  state before %d", state, lastInputState);
                     emit morseSymbolInputed(morse::dot);
+                    lastSymbolEmission = currentTime;
+
                 }
-                lastSymbolEmission = currentTime;
+                else if ((!(lastInputState & dashKeyPressed) || lastInputState & dotKeyPressed) && !(state & dotKeyPressed) && state & dashKeyPressed)
+                {
+                    qDebug("dash key detected, because of newkey, state %d  state before %d", state, lastInputState);
+                    emit morseSymbolInputed(morse::dash);
+                    lastSymbolEmission = currentTime;
+                }
+                qDebug("keyup detected, because of newkey, state %d  state before %d", state, lastInputState);
                 lastInputState = state;
             }
         }

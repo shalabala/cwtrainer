@@ -29,12 +29,17 @@ namespace display
         connect(this, &MainWindow::singleKeyPressed, presenter.get(), &presenter::Presenter::slotSingleKeyPressed);
         connect(this, &MainWindow::dotKeyPressed, presenter.get(), &presenter::Presenter::slotDotKeyPressed);
         connect(this, &MainWindow::dashKeyPressed, presenter.get(), &presenter::Presenter::slotDashKeyPressed);
-        connect(this, &MainWindow::keyReleased, presenter.get(), &presenter::Presenter::slotKeyReleased);
+        connect(this, &MainWindow::singleKeyReleased, presenter.get(), &presenter::Presenter::slotSingleKeyReleased);
+        connect(this, &MainWindow::dotKeyReleased, presenter.get(), &presenter::Presenter::slotDotKeyReleased);
+        connect(this, &MainWindow::dashKeyReleased, presenter.get(), &presenter::Presenter::slotDashKeyReleased);
     }
 
     void MainWindow::keyPressEvent(QKeyEvent *event)
     {
-        int key=event->key();
+        if(event->isAutoRepeat()){
+            return;
+        }
+        int key = event->key();
         if (key == configuration->getSingleKeyScanCode())
         {
             emit singleKeyPressed();
@@ -51,6 +56,21 @@ namespace display
 
     void MainWindow::keyReleaseEvent(QKeyEvent *event)
     {
-        emit keyReleased();
+        if(event->isAutoRepeat()){
+            return;
+        }
+        int key = event->key();
+        if (key == configuration->getSingleKeyScanCode())
+        {
+            emit singleKeyReleased();
+        }
+        else if (key == configuration->getDotKeyScanCode())
+        {
+            emit dotKeyReleased();
+        }
+        else if (key == configuration->getDashKeyScanCode())
+        {
+            emit dashKeyReleased();
+        }
     }
 }

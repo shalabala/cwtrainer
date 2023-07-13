@@ -26,7 +26,9 @@ namespace display
         void singleKeyPressed();
         void dotKeyPressed();
         void dashKeyPressed();
-        void keyReleased();
+        void singleKeyReleased();
+        void dotKeyReleased();
+        void dashKeyReleased();
         public slots:
         
         private:

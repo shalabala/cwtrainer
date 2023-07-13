@@ -4,10 +4,10 @@ namespace presenter
 {
     enum InputState
     {
-        undefined,
-        singleKeyPressed,
-        dotKeyPressed,
-        dashKeyPressed,
+        undefined=0,
+        singleKeyPressed=1,
+        dotKeyPressed=2,
+        dashKeyPressed=4,
     };
 }
 

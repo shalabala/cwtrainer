@@ -21,13 +21,14 @@ namespace presenter
         void morseSymbolInputed(char s);
         void inputChanged();
         void finished();
+        void sleep(int64_t ms);
         void error(QString err);
     private:
         Presenter* presenter;
         std::shared_ptr<configuration::Configuration> configuration;
         bool isFinished;
         int64_t lastSymbolEmission;
-        InputState lastInputState;
+        int lastInputState;
     };
 }
 
