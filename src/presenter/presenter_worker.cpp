@@ -4,6 +4,7 @@
 #include "presenter.h"
 #include <memory>
 #include <iostream>
+#include <QThread>
 namespace conf = configuration;
 namespace presenter
 {
@@ -24,17 +25,18 @@ namespace presenter
             int state = presenter->getInputState();
             if (state == lastInputState)
             {
-                if ((state & dotKeyPressed) && elapsed >= (configuration->getDotLength() + configuration->getDotLength()))
+                if (state & dotKeyPressed)
                 {
-                    qDebug("dot key detected, elapsed %lld", elapsed);
+                    qDebug("dot key detected, elapsed %ld", elapsed);
                     emit morseSymbolInputed(morse::dot);
-                    emit sleep(configuration->getDotLength() + configuration->getDotLength());
+                    QThread::msleep(configuration->getDotLength() + configuration->getDotLength());
                     lastSymbolEmission = currentTime;
                 }
-                else if ((state & dashKeyPressed) && elapsed >= (configuration->getDashLength() + configuration->getDotLength()))
+                else if (state & dashKeyPressed)
                 {
-                    qDebug("dot dash detected, elapsed %lld", elapsed);
+                    qDebug("dot dash detected, elapsed %ld", elapsed);
                     emit morseSymbolInputed(morse::dash);
+                    QThread::msleep(configuration->getDashLength() + configuration->getDotLength());
                     lastSymbolEmission = currentTime;
                 }
             }
@@ -54,19 +56,21 @@ namespace presenter
                         qDebug("single key dot");
                     }
                     lastSymbolEmission = currentTime;
-
                 }
                 if (!(lastInputState & dotKeyPressed) && state & dotKeyPressed)
                 {
                     qDebug("dot key detected, because of newkey, state %d  state before %d", state, lastInputState);
                     emit morseSymbolInputed(morse::dot);
-                    lastSymbolEmission = currentTime;
 
+                    QThread::msleep(configuration->getDotLength() + configuration->getDotLength());
+                    lastSymbolEmission = currentTime;
                 }
                 else if ((!(lastInputState & dashKeyPressed) || lastInputState & dotKeyPressed) && !(state & dotKeyPressed) && state & dashKeyPressed)
                 {
                     qDebug("dash key detected, because of newkey, state %d  state before %d", state, lastInputState);
                     emit morseSymbolInputed(morse::dash);
+
+                    QThread::msleep(configuration->getDashLength() + configuration->getDotLength());
                     lastSymbolEmission = currentTime;
                 }
                 qDebug("keyup detected, because of newkey, state %d  state before %d", state, lastInputState);

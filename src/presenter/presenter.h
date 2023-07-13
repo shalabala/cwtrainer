@@ -26,7 +26,7 @@ namespace presenter
         void clearBeeper();
     private:
         beeper::Beeper beeper;
-        int state;
+        int stateFlags;
         std::shared_ptr<configuration::Configuration> configuration;
     };
 }

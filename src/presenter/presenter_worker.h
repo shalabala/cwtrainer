@@ -21,7 +21,6 @@ namespace presenter
         void morseSymbolInputed(char s);
         void inputChanged();
         void finished();
-        void sleep(int64_t ms);
         void error(QString err);
     private:
         Presenter* presenter;

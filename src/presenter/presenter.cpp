@@ -8,7 +8,8 @@
 namespace presenter
 {
     Presenter::Presenter(std::shared_ptr<configuration::Configuration> configuration) : configuration(configuration),
-                                                                                        beeper(configuration)
+                                                                                        beeper(configuration),
+                                                                                        stateFlags(0)
     {
         QThread *thread = new QThread();
         PresenterWorker *worker = new PresenterWorker(this, configuration);
@@ -20,41 +21,40 @@ namespace presenter
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
         connect(worker, &PresenterWorker::morseSymbolInputed, this, &Presenter::slotMorseSymbolInputed);
         connect(worker, &PresenterWorker::inputChanged, this, &Presenter::clearBeeper);
-        connect(worker, &PresenterWorker::sleep, thread, &QThread::sleep);
         thread->start();
     }
     int Presenter::getInputState()
     {
-        return state;
+        return stateFlags;
     }
     void Presenter::slotDashKeyPressed()
     {
-        state |= dashKeyPressed;
+        stateFlags |= dashKeyPressed;
     }
     void Presenter::slotSingleKeyReleased()
     {
-        if (state & singleKeyPressed)
+        if (stateFlags & singleKeyPressed)
         {
             beeper.beepOff();
-            state &= ~singleKeyPressed;
+            stateFlags &= ~singleKeyPressed;
         }
     }
     void Presenter::slotDotKeyReleased()
     {
-        state &= ~dotKeyPressed;
+        stateFlags &= ~dotKeyPressed;
     }
 
     void Presenter::slotDashKeyReleased()
     {
-        state &= ~dashKeyPressed;
+        stateFlags &= ~dashKeyPressed;
     }
     void Presenter::slotDotKeyPressed()
     {
-        state |= dotKeyPressed;
+        stateFlags |= dotKeyPressed;
     }
     void Presenter::slotSingleKeyPressed()
     {
-        state |= singleKeyPressed;
+        stateFlags |= singleKeyPressed;
         beeper.beepOn();
     }
     void Presenter::slotMorseSymbolInputed(char s)
