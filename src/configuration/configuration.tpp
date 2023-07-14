@@ -39,6 +39,12 @@ namespace configuration
         return get<int, dotLength>() * 3;
     }
 
+    template <ConfigurationKey K>
+    inline int Configuration::get()
+    {
+        return get<int, K>();
+    }
+
     template <>
     inline int Configuration::get<int, wordEndLength>()
     {
@@ -68,6 +74,7 @@ namespace configuration
     }
     inline void Configuration::createDefaultConfigFile()
     {
+        config.clear();
         setWithoutSave(dotLength, 150);
         setWithoutSave(defaultDifficulty, medium);
         setWithoutSave(beeperFrequency, 550);

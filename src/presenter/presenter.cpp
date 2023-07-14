@@ -7,9 +7,10 @@
 
 namespace presenter
 {
-    Presenter::Presenter(std::shared_ptr<configuration::Configuration> configuration) : configuration(configuration),
-                                                                                        beeper(configuration),
-                                                                                        stateFlags(0)
+    Presenter::Presenter(std::shared_ptr<configuration::Configuration> configuration,
+                         std::shared_ptr<dictionary::Dictionary> dictionary) : configuration(configuration),
+                                                                               beeper(configuration),
+                                                                               stateFlags(0)
     {
         QThread *thread = new QThread();
         PresenterWorker *worker = new PresenterWorker(this, configuration);

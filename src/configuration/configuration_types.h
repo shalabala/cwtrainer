@@ -12,8 +12,17 @@ namespace configuration
     */
     enum Difficulty
     {
-        easy,
+        /**
+         * Letters (this difficulty requires no dictionary file)
+        */
+        easy=0,
+        /**
+         * Words
+        */
         medium,
+        /**
+         * Sentences
+        */
         hard
     };
 

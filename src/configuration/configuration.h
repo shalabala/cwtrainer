@@ -11,9 +11,20 @@ namespace configuration
     class Configuration
     {
     public:
-        Configuration();
+        explicit Configuration();
+        /**
+         * Gets the configuration value and tries to convert it to the given type
+         * Note: not all configuration values come from files, some are calculated
+        */
         template<typename T, ConfigurationKey K>
         T get();
+
+        /**
+         * Gets the configuration value and tries to convert it to int
+         * Note: not all configuration values come from files, some are calculated
+        */
+        template<ConfigurationKey K>
+        int get();
     private:
         template<typename T>
         void setWithoutSave(ConfigurationKey key, T value);

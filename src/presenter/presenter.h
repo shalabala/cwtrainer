@@ -2,6 +2,7 @@
 #define CWTRAINER_PRESENTER
 #include "../configuration/configuration.h"
 #include "../beeper/beeper.h"
+#include "../dictionary/dictionary.h"
 #include "presenter_types.h"
 #include <QObject>
 #include <memory>
@@ -16,7 +17,8 @@ namespace presenter
     {
         Q_OBJECT
     public:
-        Presenter(std::shared_ptr<configuration::Configuration> configuration);
+        Presenter(std::shared_ptr<configuration::Configuration> configuration,
+        std::shared_ptr<dictionary::Dictionary> dictionary);
         /**Gets the input state flags
          * 
         */
@@ -52,7 +54,7 @@ namespace presenter
         void slotMorseSymbolInput(char s);
     private:
         beeper::Beeper beeper;
-        int stateFlags;
+        int stateFlags=0;
         std::shared_ptr<configuration::Configuration> configuration;
     };
 }

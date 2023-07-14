@@ -6,6 +6,7 @@
 
 /build/*
 !/build/CMakeLists.txt
+!/build/dictionary_*.csv
 
 # Compiled Object files
 *.slo
