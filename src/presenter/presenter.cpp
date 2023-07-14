@@ -19,11 +19,10 @@ namespace presenter
         connect(worker, &PresenterWorker::finished, thread, &QThread::quit);
         connect(worker, &PresenterWorker::finished, worker, &PresenterWorker::deleteLater);
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-        connect(worker, &PresenterWorker::morseSymbolInputed, this, &Presenter::slotMorseSymbolInputed);
-        connect(worker, &PresenterWorker::inputChanged, this, &Presenter::clearBeeper);
+        connect(worker, &PresenterWorker::morseSymbolInput, this, &Presenter::slotMorseSymbolInput);
         thread->start();
     }
-    int Presenter::getInputState()
+    int Presenter::getInputStateFlags()
     {
         return stateFlags;
     }
@@ -57,12 +56,8 @@ namespace presenter
         stateFlags |= singleKeyPressed;
         beeper.beepOn();
     }
-    void Presenter::slotMorseSymbolInputed(char s)
+    void Presenter::slotMorseSymbolInput(char s)
     {
         beeper.schedule(morse::MorseString(1, s));
-    }
-    void Presenter::clearBeeper()
-    {
-        beeper.clearSchedule();
     }
 }

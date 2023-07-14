@@ -9,21 +9,47 @@
 
 namespace presenter
 {
+    /**Handles the central input processing, and the view management
+     * 
+    */
     class Presenter : public QObject
     {
         Q_OBJECT
     public:
         Presenter(std::shared_ptr<configuration::Configuration> configuration);
-        int getInputState();
+        /**Gets the input state flags
+         * 
+        */
+        int getInputStateFlags();
     public slots:
+        /**Sets the state that the single key has been pressed
+         * 
+        */
         void slotSingleKeyPressed();
+        /**Sets the state that the dot key has been pressed
+         * 
+        */
         void slotDotKeyPressed();
+        /**Sets the state that the dash key has been pressed
+         * 
+        */
         void slotDashKeyPressed();
+        /**Sets the state that the single key has been released
+         * 
+        */
         void slotSingleKeyReleased();
+        /**Sets the state that the dot key has been released
+         * 
+        */
         void slotDotKeyReleased();
+        /**Sets the state that the dash key has been released
+         * 
+        */
         void slotDashKeyReleased();
-        void slotMorseSymbolInputed(char s);
-        void clearBeeper();
+        /**Processes the inputed morse signal
+         * 
+        */
+        void slotMorseSymbolInput(char s);
     private:
         beeper::Beeper beeper;
         int stateFlags;

@@ -1,5 +1,6 @@
 #include "main_window.h"
 #include "../configuration/configuration.h"
+#include "../configuration/configuration_types.h"
 #include <QApplication>
 #include <QPushButton>
 #include <QGridLayout>
@@ -7,7 +8,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QKeyEvent>
-
+namespace conf = configuration;
 namespace display
 {
     MainWindow::MainWindow(std::shared_ptr<presenter::Presenter> presenter,
@@ -36,19 +37,20 @@ namespace display
 
     void MainWindow::keyPressEvent(QKeyEvent *event)
     {
-        if(event->isAutoRepeat()){
+        if (event->isAutoRepeat())
+        {
             return;
         }
         int key = event->key();
-        if (key == configuration->getSingleKeyScanCode())
+        if (key == configuration->get<int, conf::singleKeyScanCode>())
         {
             emit singleKeyPressed();
         }
-        else if (key == configuration->getDotKeyScanCode())
+        else if (key == configuration->get<int, conf::dotKeyScanCode>())
         {
             emit dotKeyPressed();
         }
-        else if (key == configuration->getDashKeyScanCode())
+        else if (key == configuration->get<int, conf::dashKeyScanCode>())
         {
             emit dashKeyPressed();
         }
@@ -56,19 +58,20 @@ namespace display
 
     void MainWindow::keyReleaseEvent(QKeyEvent *event)
     {
-        if(event->isAutoRepeat()){
+        if (event->isAutoRepeat())
+        {
             return;
         }
         int key = event->key();
-        if (key == configuration->getSingleKeyScanCode())
+        if (key == configuration->get<int,conf::singleKeyScanCode>())
         {
             emit singleKeyReleased();
         }
-        else if (key == configuration->getDotKeyScanCode())
+        else if (key == configuration->get<int,conf::dotKeyScanCode>())
         {
             emit dotKeyReleased();
         }
-        else if (key == configuration->getDashKeyScanCode())
+        else if (key == configuration->get<int,conf::dashKeyScanCode>())
         {
             emit dashKeyReleased();
         }
