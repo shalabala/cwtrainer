@@ -4,6 +4,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
 #include <filesystem>
+#include <iostream>
 
 namespace configuration
 {
@@ -18,7 +19,18 @@ namespace configuration
     template <typename T, ConfigurationKey K>
     inline T Configuration::get()
     {
-        return config.get<T>(keyToString[K]);
+        try
+        {
+            return config.get<T>(keyToString[K]);
+        }
+        catch (std::exception &ex)
+        {
+            std::cout << "Error while trying to read configuration for key " << keyToString[K]
+                      << " std::exception: " << ex.what() << std::endl;
+            std::cout << "Recreating and saving new configuration file" << std::endl;
+            createDefaultConfigFile();
+            return config.get<T>(keyToString[K]);
+        }
     }
 
     template <>
@@ -40,11 +52,11 @@ namespace configuration
     }
 
     template <>
-    inline int Configuration::get<int,dashThresholdLength>()
+    inline int Configuration::get<int, dashThresholdLength>()
     {
-        return get<int,dashLength>()/2;
+        return get<int, dashLength>() / 2;
     }
- 
+
     inline bool Configuration::createDefaultConfigFileIfNotExist()
     {
         if (std::filesystem::exists(path))
@@ -56,13 +68,13 @@ namespace configuration
     }
     inline void Configuration::createDefaultConfigFile()
     {
-        config.put(dotLengthKey, 150);
-        config.put(defaultDificultyKey, medium);
-        config.put(beeperFrequencyKey, 550);
-        config.put(beeperAmplitudeKey, 28000);
-        config.put(singleKeyScanCodeKey, 32);
-        config.put(dotKeyScanCodeKey, 70);
-        config.put(dashKeyScanCodeKey, 71);
+        setWithoutSave(dotLength, 150);
+        setWithoutSave(defaultDifficulty, medium);
+        setWithoutSave(beeperFrequency, 550);
+        setWithoutSave(beeperAmplitude, 28000);
+        setWithoutSave(singleKeyScanCode, 32);
+        setWithoutSave(dotKeyScanCode, 70);
+        setWithoutSave(dashKeyScanCode, 71);
         saveConfigFile();
     }
 
@@ -74,6 +86,12 @@ namespace configuration
     inline void Configuration::readConfigFile()
     {
         boost::property_tree::read_json(path, config);
+    }
+
+    template <typename T>
+    void Configuration::setWithoutSave(ConfigurationKey key, T value)
+    {
+        config.put(keyToString[key], value);
     }
 
 }

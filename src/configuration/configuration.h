@@ -16,7 +16,7 @@ namespace configuration
         T get();
     private:
         template<typename T>
-        T setWithoutSave(ConfigurationKey key);
+        void setWithoutSave(ConfigurationKey key, T value);
         void readConfigFile();
         void saveConfigFile();
         /**
@@ -29,14 +29,6 @@ namespace configuration
 
         boost::property_tree::ptree config;
     private:
-        const std::string dotLengthKey= "dotLength";
-        const std::string defaultDificultyKey = "defaultDificulty";
-        const std::string beeperFrequencyKey = "beeperFrequency";
-        const std::string beeperAmplitudeKey = "beeperAmplitude";
-        const std::string singleKeyScanCodeKey = "singleKeyScanCode";
-        const std::string dotKeyScanCodeKey = "dotKeyScanCode";
-        const std::string dashKeyScanCodeKey = "dashKeyScanCode";
-
         const std::string path = "cwtrainer.config.json";
     };
 

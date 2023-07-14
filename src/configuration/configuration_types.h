@@ -7,12 +7,19 @@
 
 namespace configuration
 {
+    /**
+     * Difficulty of the exercises
+    */
     enum Difficulty
     {
         easy,
         medium,
         hard
     };
+
+    /**
+     * Configuration keys to access their values
+    */
     enum ConfigurationKey
     {
         dotLength = 0,
@@ -27,6 +34,10 @@ namespace configuration
         dotKeyScanCode,
         dashKeyScanCode,
     };
+
+    /**
+     * String equivalents of the above defined ConfigurationKey enum
+    */
     const std::string keyToString[] =
         {
             toStr(dotLength),
