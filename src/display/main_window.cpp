@@ -22,17 +22,22 @@ namespace display
         inputLine = new QLineEdit(this);
         displayArea = new QTextEdit(this);
         displayArea->setReadOnly(true);
+        displayArea->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
         inputLine->setReadOnly(true);
-        displayArea->setText("CQD CQD");
+        QFont font("mono", 15);
+        inputLine->setFont(font);
         mainLayout->addWidget(displayArea, 0, 0);
         mainLayout->addWidget(inputLine, 1, 0);
         setLayout(mainLayout);
-        connect(this, &MainWindow::singleKeyPressed, presenter.get(), &presenter::Presenter::slotSingleKeyPressed);
-        connect(this, &MainWindow::dotKeyPressed, presenter.get(), &presenter::Presenter::slotDotKeyPressed);
-        connect(this, &MainWindow::dashKeyPressed, presenter.get(), &presenter::Presenter::slotDashKeyPressed);
-        connect(this, &MainWindow::singleKeyReleased, presenter.get(), &presenter::Presenter::slotSingleKeyReleased);
-        connect(this, &MainWindow::dotKeyReleased, presenter.get(), &presenter::Presenter::slotDotKeyReleased);
-        connect(this, &MainWindow::dashKeyReleased, presenter.get(), &presenter::Presenter::slotDashKeyReleased);
+        connect(this, &MainWindow::keyPressed, presenter.get(), &presenter::Presenter::slotKeyPressed);
+        connect(this, &MainWindow::keyReleased, presenter.get(), &presenter::Presenter::slotKeyReleased);
+        connect(presenter.get(), &presenter::Presenter::displayChange, this, &MainWindow::slotDisplayChange);
+
+        displayArea->textCursor().setKeepPositionOnInsert(true);
+        displayAreaCursor = QTextCursor(displayArea->document());
+        // last one
+        connect(this, &MainWindow::ready, presenter.get(), &presenter::Presenter::init);
+        emit ready();
     }
 
     void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -44,15 +49,15 @@ namespace display
         int key = event->key();
         if (key == configuration->get<int, conf::singleKeyScanCode>())
         {
-            emit singleKeyPressed();
+            emit keyPressed(presenter::singleKeyPressed);
         }
         else if (key == configuration->get<int, conf::dotKeyScanCode>())
         {
-            emit dotKeyPressed();
+            emit keyPressed(presenter::dotKeyPressed);
         }
         else if (key == configuration->get<int, conf::dashKeyScanCode>())
         {
-            emit dashKeyPressed();
+            emit keyPressed(presenter::dashKeyPressed);
         }
     }
 
@@ -63,17 +68,69 @@ namespace display
             return;
         }
         int key = event->key();
-        if (key == configuration->get<int,conf::singleKeyScanCode>())
+        if (key == configuration->get<int, conf::singleKeyScanCode>())
         {
-            emit singleKeyReleased();
+            emit keyReleased(presenter::singleKeyPressed);
         }
-        else if (key == configuration->get<int,conf::dotKeyScanCode>())
+        else if (key == configuration->get<int, conf::dotKeyScanCode>())
         {
-            emit dotKeyReleased();
+            emit emit keyReleased(presenter::dotKeyPressed);
         }
-        else if (key == configuration->get<int,conf::dashKeyScanCode>())
+        else if (key == configuration->get<int, conf::dashKeyScanCode>())
         {
-            emit dashKeyReleased();
+            emit emit keyReleased(presenter::dashKeyPressed);
         }
+    }
+    void MainWindow::slotDisplayChange(const presenter::DisplayChange &change)
+    {
+        int i = displayArea->textCursor().position();
+        displayArea->insertPlainText(change.textAppendToWords.c_str());
+        inputLine->insert(change.textToAppendToMorse.c_str());
+        setTextCursorPosition(i);
+    }
+
+    void MainWindow::setTextCursorPosition(int pos)
+    {
+        displayAreaCursor.setPosition(pos);
+        int newPos = displayAreaCursor.position();
+        displayArea->setTextCursor(displayAreaCursor);
+        displayArea->ensureCursorVisible();
+    }
+    void MainWindow::highlightNextTokenForInput()
+    {
+    }
+    void MainWindow::highlightCorrect(int chars)
+    {
+        highlightAndMoveCursor(chars, Qt::green);
+    }
+    void MainWindow::highlightIncorrect(int chars)
+    {
+        highlightAndMoveCursor(chars, Qt::red);
+    }
+    void MainWindow::backspace(int chars)
+    {
+        int end = displayAreaCursor.position();
+        int begin = end - chars;
+        QTextCharFormat fmt;
+        fmt.setBackground(Qt::white);
+
+        QTextCursor cursor(displayArea->document());
+        cursor.setPosition(begin, QTextCursor::MoveAnchor);
+        cursor.setPosition(end, QTextCursor::KeepAnchor);
+        cursor.setCharFormat(fmt);
+        setTextCursorPosition(begin);
+    }
+    void MainWindow::highlightAndMoveCursor(int chars, QColor color)
+    {
+        int begin = displayAreaCursor.position();
+        int end = begin + chars;
+        QTextCharFormat fmt;
+        fmt.setBackground(color);
+
+        QTextCursor cursor(displayArea->document());
+        cursor.setPosition(begin, QTextCursor::MoveAnchor);
+        cursor.setPosition(end, QTextCursor::KeepAnchor);
+        cursor.setCharFormat(fmt);
+        setTextCursorPosition(end);
     }
 }

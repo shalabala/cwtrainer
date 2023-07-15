@@ -30,7 +30,7 @@ namespace presenter
         /**Here get emitted the generated morse symbols
          * 
         */
-        void morseSymbolInput(char s);
+        void morseSymbolInput(char s, bool isSingleKey);
         /**This signal gets emitted after the worker has finished, somewhat later than the finish() slot was called
          * 
         */

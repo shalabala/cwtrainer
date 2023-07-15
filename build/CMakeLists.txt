@@ -69,9 +69,9 @@ target_link_libraries(morse PUBLIC utility)
 target_link_libraries(configuration PUBLIC utility ${Boost_LIBRARIES})
 target_link_libraries(beeper PUBLIC morse ${SDL2_LIBRARIES})
 target_link_libraries(dictionary PUBLIC configuration)
-target_link_libraries(presenter PUBLIC beeper utility configuration dictionary Qt5::Core)
+target_link_libraries(presenter PUBLIC beeper utility configuration dictionary Qt5::Core ${Boost_LIBRARIES})
 target_link_libraries(display PUBLIC beeper presenter Qt5::Core Qt5::Gui Qt5::Widgets)
-target_link_libraries(cwtrainer PUBLIC presenter display configuration dictionary)
+target_link_libraries(cwtrainer PUBLIC presenter display configuration dictionary beeper)
 
 
 #------------TESTS
