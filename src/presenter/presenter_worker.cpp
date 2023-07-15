@@ -27,6 +27,18 @@ namespace presenter
             int state = presenter->getInputStateFlags();
             if (state == lastInputState)
             {
+                if (state == noKeyPressed && lastEmittedSymbol != morse::wordEnd)
+                {
+                    if (elapsed >= configuration->get<configuration::wordEndLength>())
+                    {
+                        emitMorseSymbolInput(morse::wordEnd, true);
+                        emit morseSymbolInput(morse::letterEnd, true);
+                    }
+                    else if (lastEmittedSymbol != morse::letterEnd && elapsed >= configuration->get<configuration::letterEndLength>())
+                    {
+                        emitMorseSymbolInput(morse::letterEnd, true);
+                    }
+                }
                 if (state & singleKeyPressed)
                 {
                     // sleep?
@@ -34,42 +46,46 @@ namespace presenter
                 if (state & dotKeyPressed)
                 {
                     qDebug("dot key detected, elapsed %ld", elapsed);
-                    emit morseSymbolInput(morse::dot, false);
+                    emitMorseSymbolInput(morse::dot, false);
                     QThread::msleep(configuration->get<int, configuration::dotLength>() * 2);
                     lastSymbolEmission = currentTime;
                 }
                 else if (state & dashKeyPressed)
                 {
                     qDebug("dot dash detected, elapsed %ld", elapsed);
-                    emit morseSymbolInput(morse::dash, false);
+                    emitMorseSymbolInput(morse::dash, false);
                     QThread::msleep(configuration->get<int, configuration::dashLength>() + configuration->get<int, configuration::dotLength>());
                     lastSymbolEmission = currentTime;
                 }
             }
             else
             {
+                if (lastInputState != noKeyPressed && state == noKeyPressed)
+                {
+                    lastSymbolEmission = currentTime;
+                }
                 if (lastInputState == noKeyPressed && state & singleKeyPressed)
                 {
                     lastSymbolEmission = currentTime;
-                    //sleep?
+                    // sleep?
                 }
                 else if (lastInputState & singleKeyPressed)
                 {
                     qDebug("single key detected, because of newkey, state %d  state before %d", state, lastInputState);
                     if (elapsed >= configuration->get<int, configuration::dashThresholdLength>())
                     {
-                        emit morseSymbolInput(morse::dash, true);
+                        emitMorseSymbolInput(morse::dash, true);
                     }
                     else
                     {
-                        emit morseSymbolInput(morse::dot, true);
+                        emitMorseSymbolInput(morse::dot, true);
                     }
                     lastSymbolEmission = currentTime;
                 }
                 if (!(lastInputState & dotKeyPressed) && state & dotKeyPressed)
                 {
                     qDebug("dot key detected, because of newkey, state %d  state before %d", state, lastInputState);
-                    emit morseSymbolInput(morse::dot, false);
+                    emitMorseSymbolInput(morse::dot, false);
 
                     QThread::msleep(configuration->get<int, configuration::dotLength>() * 2);
                     lastSymbolEmission = currentTime;
@@ -77,7 +93,7 @@ namespace presenter
                 else if ((!(lastInputState & dashKeyPressed) || lastInputState & dotKeyPressed) && !(state & dotKeyPressed) && state & dashKeyPressed)
                 {
                     qDebug("dash key detected, because of newkey, state %d  state before %d", state, lastInputState);
-                    emit morseSymbolInput(morse::dash, false);
+                    emitMorseSymbolInput(morse::dash, false);
 
                     QThread::msleep(configuration->get<int, configuration::dashLength>() + configuration->get<int, configuration::dotLength>());
                     lastSymbolEmission = currentTime;
@@ -93,5 +109,10 @@ namespace presenter
     void PresenterWorker::finish()
     {
         isFinished = true;
+    }
+    void PresenterWorker::emitMorseSymbolInput(morse::MorseSymbol s, bool isSingleKey)
+    {
+        lastEmittedSymbol =s;
+        emit morseSymbolInput(s,isSingleKey);
     }
 }

@@ -1,9 +1,11 @@
 #include "display/main_window.h"
-#include "../presenter/presenter.h"
-#include "../configuration/configuration.h"
-#include "../dictionary/dictionary.h"
-#include "../beeper/beeper.h"
-#include "../beeper/ibeeper.h"
+#include "presenter/presenter.h"
+#include "configuration/configuration.h"
+#include "dictionary/dictionary.h"
+#include "beeper/beeper.h"
+#include "beeper/ibeeper.h"
+#include "morse/morse-alphabet.h"
+#include "morse/morse-translator.h"
 #include <memory>
 #include <iostream>
 
@@ -18,6 +20,5 @@ int main(int argc, char **argv)
     display::MainWindow window(present, config);
     
     window.show();
-
     return app.exec();
 }
