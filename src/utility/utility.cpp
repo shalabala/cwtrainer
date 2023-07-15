@@ -27,4 +27,33 @@ namespace cw_utility
     {
         return getCurrentTimeInMillis() - timestamp;
     }
+    char preprocessAscii(char c)
+    {
+        if(c>= '0' && c <= '9'){
+            return c;
+        }
+        if(c>= 'a' && c<='z'){
+            return c;
+        }
+        if(c>= 'A' && c<= 'Z'){
+            return c+('a'-'A');
+        }
+        throw std::invalid_argument("Only valid characters [a-zA-Z0-9] can be converted to morse");
+    }
+    bool tryPreprocessAscii(char c, char &res)
+    {
+        if(c>= '0' && c <= '9'){
+            res = c;
+            return true;
+        }
+        if(c>= 'a' && c<='z'){
+            res= c;
+            return true;
+        }
+        if(c>= 'A' && c<= 'Z'){
+            res= c+('a'-'A');
+            return true;
+        }
+        return false;
+    }
 }

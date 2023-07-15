@@ -4,7 +4,7 @@ Ziele dieses Dokuments ist zu spezifizieren wozu das Programm "cwtrainer" fähig
 Dieses Dokument dient sowohl als Funktionsspezifizierung als auch als Technische.
 
 ## Grundidee
-Das Programm dient zu ermöglichen und vereinfachen das Erlernen des sogenannten Morse-codes. Man kann dazu drei Schwierigkeitsstufen aussuchen, die sind in zunehmendem Schwierigkeitsniveau: die "easy", die "intermediate" und die "proficient" stufe. Diese werden in demselben Dokument noch weiter behandelt.
+Das Programm dient zu ermöglichen und vereinfachen das Erlernen des sogenannten Morse-codes. Man kann dazu drei Schwierigkeitsstufen aussuchen, die sind in zunehmendem Schwierigkeitsniveau: die "easy", die "medium" und die "hard" stufe. Diese werden in demselben Dokument noch weiter behandelt.
 
 ## Schnittstelle der Interaktion
 Das Programm wird mithilfe von einer grafische Schnittstelle bedient. Der Benutzer sieht beim starten des Programms zwei Textfelder. Nach oben ist ein mehrzeiliges Textfeld, hier sieht man die Wörter die man einzutippen hat. Nach unten ist ein einzeiliges Textfeld, hier erscheinen die schon eingetippten Morsezeichen.

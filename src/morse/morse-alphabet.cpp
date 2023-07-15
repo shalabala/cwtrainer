@@ -63,22 +63,11 @@ namespace morse
         }
     }
 
-    char preprocessConvertedChar(char c){
-        if(c>= '0' && c <= '9'){
-            return c;
-        }
-        if(c>= 'a' && c<='z'){
-            return c;
-        }
-        if(c>= 'A' && c<= 'Z'){
-            return c+('a'-'A');
-        }
-        throw std::invalid_argument("Only valid characters [a-zA-Z0-9] can be converted to morse");
-    }
+    
 
     const MorseStringIterator& MorseAlphabet::translateLetter(char c) const
     {
-        char toTranslate = preprocessConvertedChar(c);
+        char toTranslate = cw_utility::preprocessAscii(c);
         const MorseStringIterator& letter = charToMorse.at(toTranslate);
         return letter;
     }
@@ -93,5 +82,14 @@ namespace morse
     {
        char translation = morseToChar.at(letter);
        return translation;
+    }
+    bool MorseAlphabet::tryTranslateLetter(const MorseString &letter, char &c) const
+    {
+       if(morseToChar.find(letter.begin())== morseToChar.end())
+       {
+            return false;
+       }
+       c = translateLetter(letter);
+       return true;
     }
 }

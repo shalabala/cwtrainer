@@ -3,6 +3,8 @@
 #include "../configuration/configuration.h"
 #include "../beeper/ibeeper.h"
 #include "../dictionary/dictionary.h"
+#include "../morse/morse-alphabet.h"
+#include "../morse/morse-translator.h"
 #include "presenter_types.h"
 #include <QObject>
 #include <memory>
@@ -49,12 +51,28 @@ namespace presenter
         void init();
 
     private:
+        /**
+         * Prepares the next token to be processed, in that it splits it up into characters.
+         * puts the characters into the tokenChars queue, and empties the so far inputed morse characters
+        */
+        void prepareNextTokenIfNeeded();
+
+        /**
+         * If the token queue is empty, it requests more tokens from the dictionary
+        */
         void refillInputTokensIfNeeded();
 
         int stateFlags = 0;
         int tokenIndex = 0;
+
         std::queue<std::string> tokens;
+        std::queue<char> tokenChars;
+        morse::MorseString currentLetter;
+
         std::shared_ptr<beeper::IBeeper> beeper;
+
+        morse::MorseAlphabet alphabet;
+        morse::MorseTranslate translate;
         std::shared_ptr<configuration::Configuration> configuration;
         std::shared_ptr<dictionary::Dictionary> dict;
 

@@ -1,6 +1,9 @@
 #include "presenter.h"
 #include "../configuration/configuration.h"
 #include "../dictionary/dictionary.h"
+#include "../morse/morse-alphabet.h"
+#include "../morse/morse-translator.h"
+#include "../utility/utility.h"
 #include "presenter_worker.h"
 #include "presenter_types.h"
 #include <QThread>
@@ -13,7 +16,9 @@ namespace presenter
                          std::shared_ptr<dictionary::Dictionary> dictionary,
                          std::shared_ptr<beeper::IBeeper> beeper) : configuration(configuration),
                                                                     beeper(beeper),
-                                                                    dict(dictionary)
+                                                                    dict(dictionary),
+                                                                    alphabet(),
+                                                                    translate(alphabet)
     {
         QThread *thread = new QThread();
         PresenterWorker *worker = new PresenterWorker(this, configuration);
@@ -25,7 +30,6 @@ namespace presenter
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
         connect(worker, &PresenterWorker::morseSymbolInput, this, &Presenter::slotMorseSymbolInput);
         thread->start();
-
     }
     int Presenter::getInputStateFlags()
     {
@@ -54,7 +58,46 @@ namespace presenter
         {
             beeper->schedule(morse);
         }
+        // the changes to be assembled
         DisplayChange change;
+
+        char currentChar = tokenChars.front();
+
+        if (s == morse::wordEnd)
+        {
+            if (currentChar == ' ')
+            {
+                change.charsToHighlight = 1;
+                change.areCorrect = true;
+                tokenChars.pop();
+                prepareNextTokenIfNeeded();
+            }
+        }
+        else if (s == morse::letterEnd)
+        {
+            if (currentLetter.length() > 0)
+            {
+                currentLetter.push_back(s);
+                char translated = '\0';
+                char currentCharPreprocessed = '\0';
+                change.charsToHighlight = 1;
+                change.areCorrect = alphabet.tryTranslateLetter(currentLetter, translated) &&
+                                    cw_utility::tryPreprocessAscii(currentChar, currentCharPreprocessed) &&
+                                    translated == currentCharPreprocessed;
+                if (!change.areCorrect)
+                {
+                    tokenChars.empty();
+                }
+                tokenChars.pop();
+                cw_utility::clear(currentLetter);
+                prepareNextTokenIfNeeded();
+            }
+        }
+        else
+        {
+            currentLetter.push_back(s);
+        }
+
         change.textToAppendToMorse = morse;
         emit displayChange(change);
     }
@@ -75,7 +118,24 @@ namespace presenter
         }
     }
 
-    void Presenter::init(){
+    void Presenter::init()
+    {
         refillInputTokensIfNeeded();
+        prepareNextTokenIfNeeded();
+    }
+
+    void Presenter::prepareNextTokenIfNeeded()
+    {
+        if (tokenChars.empty())
+        {
+            refillInputTokensIfNeeded();
+            std::string top = tokens.front();
+            for (auto &&i : top)
+            {
+                tokenChars.push(i);
+            }
+            tokenChars.push(' ');
+            cw_utility::clear(currentLetter);
+        }
     }
 }

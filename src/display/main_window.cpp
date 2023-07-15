@@ -83,10 +83,31 @@ namespace display
     }
     void MainWindow::slotDisplayChange(const presenter::DisplayChange &change)
     {
-        int i = displayArea->textCursor().position();
-        displayArea->insertPlainText(change.textAppendToWords.c_str());
-        inputLine->insert(change.textToAppendToMorse.c_str());
-        setTextCursorPosition(i);
+        if (!change.textAppendToWords.empty())
+        {
+            int i = displayArea->textCursor().position();
+            displayArea->insertPlainText(change.textAppendToWords.c_str());
+            setTextCursorPosition(i);
+        }
+        if (!change.textToAppendToMorse.empty())
+        {
+            inputLine->insert(change.textToAppendToMorse.c_str());
+        }
+        if (change.charsToHighlight > 0)
+        {
+            if (change.areCorrect)
+            {
+                highlightCorrect(change.charsToHighlight);
+            }
+            else
+            {
+                highlightIncorrect(change.charsToHighlight);
+            }
+        }
+        if (change.charsToDelete > 0)
+        {
+            backspace(change.charsToDelete);
+        }
     }
 
     void MainWindow::setTextCursorPosition(int pos)
