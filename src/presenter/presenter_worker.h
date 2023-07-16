@@ -31,8 +31,9 @@ namespace presenter
          *
          */
         void morseSymbolInput(char s, bool isSingleKey);
-        /**This signal gets emitted after the worker has finished, somewhat later than the finish() slot was called
-         *
+        /**
+         * This signal gets emitted after the worker has finished, somewhat later than the 
+         * finish() slot was called
          */
         void finished();
         /**Error signal
@@ -41,6 +42,9 @@ namespace presenter
         void error(QString err);
 
     private:
+        /**
+         * sends the processed morse signal, and records it as the last signal sent
+         */
         void emitMorseSymbolInput(morse::MorseSymbol s, bool isSingleKey);
         /**The presenter that records its current state of pressed keys
          *

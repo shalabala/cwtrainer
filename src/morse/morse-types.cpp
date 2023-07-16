@@ -21,17 +21,46 @@ namespace morse
         MorseStringIterator lhsElement = lhs;
         for (; isBeep(*rhsElement) && isBeep(*lhsElement); ++rhsElement, ++lhsElement)
         {
-            if(*rhsElement != *lhsElement){
+            if (*rhsElement != *lhsElement)
+            {
                 return false;
             }
         }
         return true;
     }
 
+    int getLengthInDots(const MorseString &str)
+    {
+        int total = 0;
+        for (auto &&i : str)
+        {
+            switch (i)
+            {
+            case dot:
+                total += 1;
+                break;
+            case dash:
+                total += 3;
+                break;
+            case letterEnd:
+                total += 3;
+                break;
+            case wordEnd:
+                // word end characters are always followed by and preceeded by a letter end character.
+                // its value should be 7, so the 3+1+3 gives exactly that result
+                total += 1;
+                break;
+            default:
+                break;
+            }
+        }
+        return total;
+    }
+
 }
 std::ostream &operator<<(std::ostream &outStream, const morse::MorseStringIterator &iterator)
 {
-    for(morse::MorseStringIterator modifiableIterator = iterator; *modifiableIterator != morse::textEnd; ++modifiableIterator)
-    outStream << *modifiableIterator;
+    for (morse::MorseStringIterator modifiableIterator = iterator; *modifiableIterator != morse::textEnd; ++modifiableIterator)
+        outStream << *modifiableIterator;
     return outStream;
 }

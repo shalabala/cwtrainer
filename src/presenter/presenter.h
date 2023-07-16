@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-
+#include <mutex>
 namespace presenter
 {
     /**Handles the central input processing, and the view management
@@ -27,6 +27,23 @@ namespace presenter
          *
          */
         int getInputStateFlags();
+        /**
+         * Gets for how long should the event processor thread be paused
+        */
+        int getPause();
+        /**
+         * Resets the pause counter thread safely. This should indicate that the
+         * event processor thread has paused for the given amount of time.
+         * 
+         * The int parameter is provided for checking wether the pause value is still the same,
+         * as it was before accessing it. 
+         * If it receives a value that is 0 or not the same as the current value of the pause milliseconds,
+         * it will return false and the pause value will not be changed
+         * 
+         * In other cases it returns true and the pause variable will be set to 0
+         * 
+         */
+        bool resetPause(int oldValueToCheck);
     signals:
         /**
          * Signals in what way should the display be changed
@@ -51,6 +68,11 @@ namespace presenter
         void init();
 
     private:
+        const std::string& getCurrentToken();
+        /**
+         * Stops the key processing for the given period
+         */
+        void stopKeyProcessingFor(int ms);
         /**
          * Prepares the next token to be processed, in that it splits it up into characters.
          * puts the characters into the tokenChars queue, and empties the so far inputed morse characters
@@ -62,11 +84,18 @@ namespace presenter
          */
         void refillInputTokensIfNeeded();
 
+        /**
+         * Plays the current token on the beeper. Stops the user input for that time
+         */
         void initiateHelpFunction();
+
         /**
          * Goes back by one character
-        */
+         */
         void goBack();
+
+        int eventProcessingPauseMs = 0;
+        std::mutex pauseLock;
 
         int stateFlags = 0;
         int tokenIndex = 0;
@@ -76,7 +105,7 @@ namespace presenter
 
         std::vector<char> tokenChars;
         size_t tokenCharsIndex = 0;
-        
+
         morse::MorseString currentLetter;
 
         std::shared_ptr<beeper::IBeeper> beeper;

@@ -22,6 +22,14 @@ namespace presenter
     {
         while (!isFinished)
         {
+            int pause = presenter->getPause();
+            if (presenter->getPause() > 0)
+            {
+                if(presenter->resetPause(pause)){
+                    QThread::msleep(pause);
+                }
+                continue;
+            }
             int64_t currentTime = cw_utility::getCurrentTimeInMillis();
             int64_t elapsed = currentTime - lastSymbolEmission;
             int state = presenter->getInputStateFlags();
@@ -112,7 +120,7 @@ namespace presenter
     }
     void PresenterWorker::emitMorseSymbolInput(morse::MorseSymbol s, bool isSingleKey)
     {
-        lastEmittedSymbol =s;
-        emit morseSymbolInput(s,isSingleKey);
+        lastEmittedSymbol = s;
+        emit morseSymbolInput(s, isSingleKey);
     }
 }

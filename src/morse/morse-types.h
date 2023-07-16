@@ -105,6 +105,16 @@ namespace morse
         /**check if equal*/
         bool operator()(const MorseStringIterator &lhs, const MorseStringIterator &rhs) const noexcept;
     };
+    /**
+     * returns the length of the string in number of dots
+     * 
+     * for example, for the string ...--- \ returns
+     * 3*dot for the 3 dots
+     * 3*dash = 3*3*dot for the 3 dashes
+     * 1*word end = 7*dot for the word end \ character
+     * so in this case the return would be 19
+    */
+    int getLengthInDots(const MorseString& str);
 } 
 std::ostream &operator<<(std::ostream &outStream, const morse::MorseStringIterator &iterator);
 #endif

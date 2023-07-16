@@ -35,6 +35,24 @@ namespace presenter
     {
         return stateFlags;
     }
+    int Presenter::getPause()
+    {
+        return eventProcessingPauseMs;
+    }
+    bool Presenter::resetPause(int oldValueInMs)
+    {
+        const std::lock_guard<std::mutex> lock(pauseLock);
+        if(oldValueInMs == eventProcessingPauseMs && eventProcessingPauseMs >0){
+            eventProcessingPauseMs = 0;
+            return true;
+        }
+        return false;
+    }
+    void Presenter::stopKeyProcessingFor(int ms)
+    {
+        const std::lock_guard<std::mutex> lock(pauseLock);
+        eventProcessingPauseMs = ms;
+    }
     void Presenter::slotKeyPressed(InputState state)
     {
         if (state == backspacePressed)
@@ -133,10 +151,18 @@ namespace presenter
         }
     }
 
+    void Presenter::initiateHelpFunction()
+    {
+        const std::string& currentToken = getCurrentToken();
+        morse::MorseString translation = translate.translateTextToMorse(currentToken);
+        beeper.
+
+    }
+
     void Presenter::goBack()
     {
         cw_utility::clear(currentLetter);
-        if (tokensIndex <2 && tokenCharsIndex == 0)
+        if (tokensIndex < 2 && tokenCharsIndex == 0)
         {
             return;
         }
@@ -147,9 +173,9 @@ namespace presenter
         else
         {
             cw_utility::clear(tokenChars);
-            tokensIndex-=2;
+            tokensIndex -= 2;
             prepareNextTokenIfNeeded();
-            tokenCharsIndex = tokenChars.size()-1;
+            tokenCharsIndex = tokenChars.size() - 1;
         }
         DisplayChange change;
         change.charsToDelete = 1;
@@ -160,6 +186,11 @@ namespace presenter
     {
         refillInputTokensIfNeeded();
         prepareNextTokenIfNeeded();
+    }
+
+    const std::string& Presenter::getCurrentToken()
+    {
+        return tokens[tokensIndex-1];
     }
 
     void Presenter::prepareNextTokenIfNeeded()
@@ -173,7 +204,7 @@ namespace presenter
 
             std::string &top = tokens[tokensIndex];
             ++tokensIndex;
-            
+
             for (auto &&i : top)
             {
                 tokenChars.push_back(i);
