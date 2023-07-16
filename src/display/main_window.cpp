@@ -26,6 +26,7 @@ namespace display
         inputLine->setReadOnly(true);
         QFont font("mono", 15);
         inputLine->setFont(font);
+        displayArea->setFont(font);
         mainLayout->addWidget(displayArea, 0, 0);
         mainLayout->addWidget(inputLine, 1, 0);
         setLayout(mainLayout);

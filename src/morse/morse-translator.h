@@ -1,8 +1,8 @@
 #ifndef CWTRAINER_MORSE_TRANSLATOR_H
 #define CWTRAINER_MORSE_TRANSLATOR_H
-#include <string>
 #include "morse-types.h"
 #include "morse-alphabet.h"
+#include <string>
 namespace morse
 {
     class MorseTranslate
