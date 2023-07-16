@@ -7,6 +7,7 @@
 #include <memory>
 #include <iostream>
 #include <QThread>
+#include <mutex>
 namespace conf = configuration;
 namespace presenter
 {
@@ -22,14 +23,7 @@ namespace presenter
     {
         while (!isFinished)
         {
-            int pause = presenter->getPause();
-            if (presenter->getPause() > 0)
-            {
-                if(presenter->resetPause(pause)){
-                    QThread::msleep(pause);
-                }
-                continue;
-            }
+            const std::lock_guard guard(presenter->beeperLock);
             int64_t currentTime = cw_utility::getCurrentTimeInMillis();
             int64_t elapsed = currentTime - lastSymbolEmission;
             int state = presenter->getInputStateFlags();

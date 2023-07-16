@@ -35,24 +35,7 @@ namespace presenter
     {
         return stateFlags;
     }
-    int Presenter::getPause()
-    {
-        return eventProcessingPauseMs;
-    }
-    bool Presenter::resetPause(int oldValueInMs)
-    {
-        const std::lock_guard<std::mutex> lock(pauseLock);
-        if(oldValueInMs == eventProcessingPauseMs && eventProcessingPauseMs >0){
-            eventProcessingPauseMs = 0;
-            return true;
-        }
-        return false;
-    }
-    void Presenter::stopKeyProcessingFor(int ms)
-    {
-        const std::lock_guard<std::mutex> lock(pauseLock);
-        eventProcessingPauseMs = ms;
-    }
+   
     void Presenter::slotKeyPressed(InputState state)
     {
         if (state == backspacePressed)
@@ -61,6 +44,7 @@ namespace presenter
         }
         else if (state == helpKeyPressed)
         {
+            initiateHelpFunction();
         }
         else
         {
@@ -153,10 +137,12 @@ namespace presenter
 
     void Presenter::initiateHelpFunction()
     {
+        const std::lock_guard lock(beeperLock);
         const std::string& currentToken = getCurrentToken();
         morse::MorseString translation = translate.translateTextToMorse(currentToken);
-        beeper.
-
+        beeper->clearSchedule();
+        beeper->schedule(translation);
+        beeper->wait();
     }
 
     void Presenter::goBack()

@@ -76,7 +76,7 @@ namespace configuration
     {
         config.clear();
         setWithoutSave(dotLength, 150);
-        setWithoutSave(defaultDifficulty, medium);
+        setWithoutSave(defaultDifficulty, easy);
         setWithoutSave(beeperFrequency, 550);
         setWithoutSave(beeperAmplitude, 28000);
         setWithoutSave(singleKeyScanCode, 83);

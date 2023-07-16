@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "SDL_audio.h"
 #include "../morse/morse-types.h"
+#include "../utility/utility.h"
 #include "../configuration/configuration.h"
 #include "../configuration/configuration_types.h"
 #include <memory>
@@ -67,7 +68,8 @@ namespace beeper
     {
         SDL_LockAudio();
         // clear
-        std::queue<morse::MorseSymbol>().swap(symbols);
+        cw_utility::clear(symbols);
+        cw_utility::clear(beeps);
         SDL_UnlockAudio();
     }
 

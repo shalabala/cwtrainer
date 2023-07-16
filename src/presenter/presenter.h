@@ -27,23 +27,12 @@ namespace presenter
          *
          */
         int getInputStateFlags();
+
         /**
-         * Gets for how long should the event processor thread be paused
-        */
-        int getPause();
-        /**
-         * Resets the pause counter thread safely. This should indicate that the
-         * event processor thread has paused for the given amount of time.
-         * 
-         * The int parameter is provided for checking wether the pause value is still the same,
-         * as it was before accessing it. 
-         * If it receives a value that is 0 or not the same as the current value of the pause milliseconds,
-         * it will return false and the pause value will not be changed
-         * 
-         * In other cases it returns true and the pause variable will be set to 0
-         * 
+         * Lock for all beeper related activities
          */
-        bool resetPause(int oldValueToCheck);
+        std::mutex beeperLock;
+
     signals:
         /**
          * Signals in what way should the display be changed
@@ -68,7 +57,7 @@ namespace presenter
         void init();
 
     private:
-        const std::string& getCurrentToken();
+        const std::string &getCurrentToken();
         /**
          * Stops the key processing for the given period
          */
@@ -93,9 +82,6 @@ namespace presenter
          * Goes back by one character
          */
         void goBack();
-
-        int eventProcessingPauseMs = 0;
-        std::mutex pauseLock;
 
         int stateFlags = 0;
         int tokenIndex = 0;
