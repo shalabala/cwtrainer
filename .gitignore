@@ -60,4 +60,6 @@ _deps
 #executable
 build/cwtrainer*
 
+cwtrainer.config.json
+todo.txt
 # End of https://www.toptal.com/developers/gitignore/api/cmake
