@@ -16,6 +16,12 @@ namespace configuration
         }
     }
 
+    template <ConfigurationKey K, typename T>
+    inline void Configuration::set(T t){
+        config.put(keyToString[K], t);
+        saveConfigFile();
+    }
+
     template <typename T, ConfigurationKey K>
     inline T Configuration::get()
     {

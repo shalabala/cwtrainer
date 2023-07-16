@@ -12,30 +12,16 @@ namespace dictionary
     {
         configuration::Difficulty difficulty = static_cast<configuration::Difficulty>(configuration->get<configuration::defaultDifficulty>());
 
-        if (difficulty == configuration::easy)
+        std::string path = getDictionaryPath();
+        std::ifstream file(path);
+        std::string line;
+        std::string token;
+        while (std::getline(file, line))
         {
-            for (char c = 'A'; c <= 'Z'; ++c)
+            std::stringstream lineStream(line);
+            while (std::getline(lineStream, token, tokenSeparator))
             {
-                allTokens.push_back(std::string(1, c));
-            }
-            for (char c = '0'; c <= '9'; ++c)
-            {
-                allTokens.push_back(std::string(1, c));
-            }
-        }
-        else
-        {
-            std::string path = getDictionaryPath();
-            std::ifstream file(path);
-            std::string line;
-            std::string token;
-            while (std::getline(file, line))
-            {
-                std::stringstream lineStream(line);
-                while (std::getline(lineStream, token, tokenSeparator))
-                {
-                    allTokens.push_back(token);
-                }
+                allTokens.push_back(token);
             }
         }
         shuffle();
@@ -55,7 +41,7 @@ namespace dictionary
             //  -> reshuffle and add the remaining
             if (lastTokenCount < end)
             {
-                end = end-lastTokenCount;
+                end = end - lastTokenCount;
                 lastTokenCount = 0;
                 shuffle();
             }

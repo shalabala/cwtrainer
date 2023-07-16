@@ -19,6 +19,9 @@ namespace configuration
         template<typename T, ConfigurationKey K>
         T get();
 
+        template<ConfigurationKey K, typename T>
+        void set(T t);
+
         /**
          * Gets the configuration value and tries to convert it to int
          * Note: not all configuration values come from files, some are calculated
