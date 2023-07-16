@@ -19,42 +19,41 @@ find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 #------------boost
 find_package(Boost REQUIRED)
 include_directories( ${Boost_INCLUDE_DIR} )
-
 #------------morse
 aux_source_directory("../src/morse" MORSE)
 add_library(morse STATIC ${MORSE})
 target_include_directories(morse PUBLIC "../src/morse")
-target_compile_features(morse PUBLIC cxx_std_11)
+target_compile_features(morse PUBLIC cxx_std_17)
 
 #------------config
 aux_source_directory("../src/configuration" CONFIG)
 add_library(configuration STATIC ${CONFIG})
 target_include_directories(configuration PUBLIC "../src/configuration")
-target_compile_features(configuration PUBLIC cxx_std_11)
+target_compile_features(configuration PUBLIC cxx_std_17)
 
 #------------dictionary
 aux_source_directory("../src/dictionary" DICTIONARY)
 add_library(dictionary STATIC ${DICTIONARY})
 target_include_directories(dictionary PUBLIC "../src/dictionary")
-target_compile_features(dictionary PUBLIC cxx_std_11)
+target_compile_features(dictionary PUBLIC cxx_std_17)
 
 #------------display
 aux_source_directory("../src/display" DISPLAY)
 add_library(display STATIC ${DISPLAY})
 target_include_directories(display PUBLIC "../src/display")
-target_compile_features(display PUBLIC cxx_std_11)
+target_compile_features(display PUBLIC cxx_std_17)
 
 #------------beeper
 aux_source_directory("../src/beeper" BEEPER)
 add_library(beeper STATIC ${BEEPER})
 target_include_directories(beeper PUBLIC "../src/beeper")
-target_compile_features(beeper PUBLIC cxx_std_11)
+target_compile_features(beeper PUBLIC cxx_std_17)
 
 #------------presenter
 aux_source_directory("../src/presenter" PRESENTER)
 add_library(presenter STATIC ${PRESENTER})
 target_include_directories(presenter PUBLIC "../src/presenter")
-target_compile_features(presenter PUBLIC cxx_std_11)
+target_compile_features(presenter PUBLIC cxx_std_17)
 
 #------------#utilities
 aux_source_directory("../src/utility" UTILITY)

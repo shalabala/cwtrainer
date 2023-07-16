@@ -32,7 +32,7 @@ namespace presenter
          */
         void morseSymbolInput(char s, bool isSingleKey);
         /**
-         * This signal gets emitted after the worker has finished, somewhat later than the 
+         * This signal gets emitted after the worker has finished, somewhat later than the
          * finish() slot was called
          */
         void finished();

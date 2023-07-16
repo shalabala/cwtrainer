@@ -29,7 +29,8 @@ namespace presenter
         int getInputStateFlags();
 
         /**
-         * Lock for all beeper related activities
+         * Lock for all beeper related activities. Only while this mutex is locked can input processing, that has the ability to 
+         * produce sound, be done.
          */
         std::mutex beeperLock;
 
