@@ -11,6 +11,9 @@ namespace presenter
         singleKeyPressed = 1,
         dotKeyPressed = 2,
         dashKeyPressed = 4,
+        //these arent used as flags
+        helpKeyPressed = 8,
+        backspacePressed = 16
     };
     /**
      * Changes that the display should render and show

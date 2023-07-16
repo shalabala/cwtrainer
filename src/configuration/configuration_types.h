@@ -42,6 +42,7 @@ namespace configuration
         singleKeyScanCode,
         dotKeyScanCode,
         dashKeyScanCode,
+        helpKeyScanCode
     };
 
     /**
@@ -60,6 +61,7 @@ namespace configuration
             toStr(singleKeyScanCode),
             toStr(dotKeyScanCode),
             toStr(dashKeyScanCode),
+            toStr(helpKeyScanCode),
     };
 }
 #endif

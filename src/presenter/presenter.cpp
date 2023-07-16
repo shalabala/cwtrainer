@@ -37,11 +37,21 @@ namespace presenter
     }
     void Presenter::slotKeyPressed(InputState state)
     {
-        if (state == singleKeyPressed && !(stateFlags & singleKeyPressed))
+        if (state == backspacePressed)
         {
-            beeper->beepOn();
+            goBack();
         }
-        stateFlags |= state;
+        else if (state == helpKeyPressed)
+        {
+        }
+        else
+        {
+            if (state == singleKeyPressed && !(stateFlags & singleKeyPressed))
+            {
+                beeper->beepOn();
+            }
+            stateFlags |= state;
+        }
     }
     void Presenter::slotKeyReleased(InputState state)
     {
@@ -61,7 +71,7 @@ namespace presenter
         // the changes to be assembled
         DisplayChange change;
 
-        char currentChar = tokenChars.front();
+        char currentChar = tokenChars[tokenCharsIndex];
 
         if (s == morse::wordEnd)
         {
@@ -69,7 +79,7 @@ namespace presenter
             {
                 change.charsToHighlight = 1;
                 change.areCorrect = true;
-                tokenChars.pop();
+                ++tokenCharsIndex;
                 prepareNextTokenIfNeeded();
             }
         }
@@ -81,14 +91,18 @@ namespace presenter
                 char translated = '\0';
                 char currentCharPreprocessed = '\0';
                 change.charsToHighlight = 1;
-                change.areCorrect = alphabet.tryTranslateLetter(currentLetter, translated) &&
-                                    cw_utility::tryPreprocessAscii(currentChar, currentCharPreprocessed) &&
-                                    translated == currentCharPreprocessed;
-                if (!change.areCorrect)
+                if (alphabet.tryTranslateLetter(currentLetter, translated) &&
+                    cw_utility::tryPreprocessAscii(currentChar, currentCharPreprocessed) &&
+                    translated == currentCharPreprocessed)
                 {
-                    tokenChars.empty();
+                    change.areCorrect = true;
                 }
-                tokenChars.pop();
+                else
+                {
+                    change.areCorrect = false;
+                }
+
+                ++tokenCharsIndex;
                 cw_utility::clear(currentLetter);
                 prepareNextTokenIfNeeded();
             }
@@ -104,8 +118,9 @@ namespace presenter
 
     void Presenter::refillInputTokensIfNeeded()
     {
-        if (tokens.empty())
+        if (tokens.size() <= tokensIndex)
         {
+            tokensIndex = 0;
             auto newTokens = dict->getNextTokens(numberOfTokensGeneratedAtOnce);
             std::string joinedString = boost::algorithm::join(newTokens, " ");
             DisplayChange change;
@@ -113,9 +128,32 @@ namespace presenter
             emit displayChange(change);
             for (auto &&i : newTokens)
             {
-                tokens.push(i);
+                tokens.push_back(i);
             }
         }
+    }
+
+    void Presenter::goBack()
+    {
+        cw_utility::clear(currentLetter);
+        if (tokensIndex <2 && tokenCharsIndex == 0)
+        {
+            return;
+        }
+        else if (tokenCharsIndex > 0)
+        {
+            --tokenCharsIndex;
+        }
+        else
+        {
+            cw_utility::clear(tokenChars);
+            tokensIndex-=2;
+            prepareNextTokenIfNeeded();
+            tokenCharsIndex = tokenChars.size()-1;
+        }
+        DisplayChange change;
+        change.charsToDelete = 1;
+        emit displayChange(change);
     }
 
     void Presenter::init()
@@ -126,16 +164,21 @@ namespace presenter
 
     void Presenter::prepareNextTokenIfNeeded()
     {
-        if (tokenChars.empty())
+        if (tokenChars.size() <= tokenCharsIndex)
         {
             refillInputTokensIfNeeded();
-            std::string top = tokens.front();
+            cw_utility::clear(tokenChars);
+            tokenCharsIndex = 0;
+            cw_utility::clear(currentLetter);
+
+            std::string &top = tokens[tokensIndex];
+            ++tokensIndex;
+            
             for (auto &&i : top)
             {
-                tokenChars.push(i);
+                tokenChars.push_back(i);
             }
-            tokenChars.push(' ');
-            cw_utility::clear(currentLetter);
+            tokenChars.push_back(' ');
         }
     }
 }

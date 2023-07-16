@@ -42,12 +42,21 @@ namespace display
 
     void MainWindow::keyPressEvent(QKeyEvent *event)
     {
+        int key = event->key();
+
+        if (key == Qt::Key_D)
+        {
+            emit keyPressed(presenter::backspacePressed);
+        }
         if (event->isAutoRepeat())
         {
             return;
         }
-        int key = event->key();
-        if (key == configuration->get<int, conf::singleKeyScanCode>())
+        if (key == configuration->get<conf::helpKeyScanCode>())
+        {
+            emit keyPressed(presenter::helpKeyPressed);
+        }
+        else if (key == configuration->get<int, conf::singleKeyScanCode>())
         {
             emit keyPressed(presenter::singleKeyPressed);
         }

@@ -1,0 +1,10 @@
+{
+    "dotLength": "150",
+    "defaultDifficulty": "1",
+    "beeperFrequency": "550",
+    "beeperAmplitude": "28000",
+    "singleKeyScanCode": "32",
+    "dotKeyScanCode": "70",
+    "dashKeyScanCode": "71",
+    "helpKeyScanCode": "72"
+}

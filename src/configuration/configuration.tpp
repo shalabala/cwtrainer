@@ -79,9 +79,10 @@ namespace configuration
         setWithoutSave(defaultDifficulty, medium);
         setWithoutSave(beeperFrequency, 550);
         setWithoutSave(beeperAmplitude, 28000);
-        setWithoutSave(singleKeyScanCode, 32);
+        setWithoutSave(singleKeyScanCode, 83);
         setWithoutSave(dotKeyScanCode, 70);
         setWithoutSave(dashKeyScanCode, 71);
+        setWithoutSave(helpKeyScanCode, 72);
         saveConfigFile();
     }
 

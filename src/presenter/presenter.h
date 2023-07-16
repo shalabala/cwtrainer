@@ -9,7 +9,7 @@
 #include <QObject>
 #include <memory>
 #include <string>
-#include <queue>
+#include <vector>
 
 namespace presenter
 {
@@ -54,19 +54,29 @@ namespace presenter
         /**
          * Prepares the next token to be processed, in that it splits it up into characters.
          * puts the characters into the tokenChars queue, and empties the so far inputed morse characters
-        */
+         */
         void prepareNextTokenIfNeeded();
 
         /**
          * If the token queue is empty, it requests more tokens from the dictionary
-        */
+         */
         void refillInputTokensIfNeeded();
+
+        void initiateHelpFunction();
+        /**
+         * Goes back by one character
+        */
+        void goBack();
 
         int stateFlags = 0;
         int tokenIndex = 0;
 
-        std::queue<std::string> tokens;
-        std::queue<char> tokenChars;
+        std::vector<std::string> tokens;
+        size_t tokensIndex = 0;
+
+        std::vector<char> tokenChars;
+        size_t tokenCharsIndex = 0;
+        
         morse::MorseString currentLetter;
 
         std::shared_ptr<beeper::IBeeper> beeper;
