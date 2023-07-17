@@ -21,7 +21,7 @@ Die Kommentierung ist in der regel auf English, sowie die Namen der Typen und Va
 ## Namenskonventionen
 - Alle variablen, Enum-werte, Methoden sowie Funktionen und Konstante werden mit camelCase benannt.
 - Typennamen verwenden PascalCase
-    - Schnittstellen (pure virtual Klassen) haben einen 'I' als Prefix in ihren Namen (pl IName statt Name)
+    - Schnittstellen (pure virtual Klassen) haben einen 'I' als Prefix in ihren Namen (zB IName statt Name)
 - Namen von Namespaces verwenden snake_case
 - Compiler-direktiven verwenden CONSTANT_CASE
 
@@ -29,8 +29,8 @@ Die Kommentierung ist in der regel auf English, sowie die Namen der Typen und Va
 ## Headerdateien
 Jede Headerdatei verfügt über Guards im folgenden Stil:
 ```
-#ifndef HEADER_FILE_NAME_H
-#define HEADER_FILE_NAME_H
+#ifndef CWTRAINER_HEADER_FILE_NAME_H
+#define CWTRAINER_HEADER_FILE_NAME_H
 
 //Inhalt der Datei ..
 

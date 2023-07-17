@@ -3,14 +3,19 @@
 #include "SDL.h"
 #include "SDL_audio.h"
 #include "../morse/morse-types.h"
+#include "../utility/utility.h"
+#include "../configuration/configuration.h"
+#include "../configuration/configuration_types.h"
+#include <memory>
+
 namespace beeper
 {
 
-    Beeper::Beeper(int freq, int amplitude, int dotDurationMS) : freq(freq),
-                                                                 amplitude(amplitude),
-                                                                 dotDurationMS(dotDurationMS),
-                                                                 isConstantBeepOn(false),
-                                                                 t(0)
+    Beeper::Beeper(std::shared_ptr<configuration::Configuration> config) : freq(config->get<int, configuration::beeperFrequency>()),
+                                                                           amplitude(config->get<int, configuration::beeperAmplitude>()),
+                                                                           dotDurationMS(config->get<int, configuration::dotLength>()),
+                                                                           isConstantBeepOn(false),
+                                                                           t(0)
     {
         SDL_AudioSpec desiredSpec;
 
@@ -56,6 +61,15 @@ namespace beeper
         {
             symbols.push(c);
         }
+        SDL_UnlockAudio();
+    }
+
+    void Beeper::clearSchedule()
+    {
+        SDL_LockAudio();
+        // clear
+        cw_utility::clear(symbols);
+        cw_utility::clear(beeps);
         SDL_UnlockAudio();
     }
 
@@ -114,7 +128,7 @@ namespace beeper
                 if (bo.samplesLeft == 0)
                 {
                     beeps.pop();
-                    t = 0;
+                    t %= sampling;
                 }
             }
         }

@@ -4,7 +4,10 @@
 #vscode
 .vscode/
 
-/build/.cmake/*
+/build/*
+!/build/CMakeLists.txt
+!/build/dictionary_*.csv
+
 # Compiled Object files
 *.slo
 *.lo
@@ -55,6 +58,8 @@ _deps
 *-prefix/
 
 #executable
-build/cwtrainer
+build/cwtrainer*
 
+cwtrainer.config.json
+todo.txt
 # End of https://www.toptal.com/developers/gitignore/api/cmake

@@ -1,5 +1,5 @@
-#ifndef MORSE_ALPHABET_H
-#define MORSE_ALPHABET_H
+#ifndef CWTRAINER_MORSE_ALPHABET_H
+#define CWTRAINER_MORSE_ALPHABET_H
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -11,13 +11,24 @@ namespace morse
     {
     public:
         MorseAlphabet();
-        /**Translates single character to equivalent morse string*/
+        /**
+         * Translates single character to equivalent morse string
+         * */
         const MorseStringIterator &translateLetter(char c) const;
-        /**Translates a morse letter to the equivalent character. It is presumed that the string contains only a single letter*/
+        /**
+         * Translates a morse letter to the equivalent character. It is presumed that the string contains only a single letter
+         * */
         char translateLetter(const MorseString &letter) const;
-        /**Translates the next morse letter in the string to the equivalent character.
-         * If the iterated container does not contain an ending character (letterEnd or wordEnd) the call might result in a SIGSEGV error*/
+        /**
+         * Translates the next morse letter in the string to the equivalent character.
+         * If the iterated container does not contain an ending character (letterEnd or wordEnd) the call might result in a SIGSEGV error
+         * */
         char translateLetter(const MorseStringIterator &iterator) const;
+        /**
+         * Tries to translate the given morse letter, if successful returns true, and the
+         * translated value can be read from the char ref parameter
+        */
+        bool tryTranslateLetter(const MorseString &letter, char& c) const;
 
     private:
         std::unordered_map<char, MorseStringIterator> charToMorse;

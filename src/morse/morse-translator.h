@@ -1,14 +1,14 @@
-#ifndef MORSE_TRANSLATOR_H
-#define MORSE_TRANSLATOR_H
-#include <string>
+#ifndef CWTRAINER_MORSE_TRANSLATOR_H
+#define CWTRAINER_MORSE_TRANSLATOR_H
 #include "morse-types.h"
 #include "morse-alphabet.h"
+#include <string>
 namespace morse
 {
     class MorseTranslate
     {
     public:
-        MorseTranslate(const MorseAlphabet &morseAlphabet);
+        explicit MorseTranslate(const MorseAlphabet &morseAlphabet);
         std::string translateMorseToText(const MorseString &symbols) const;
         std::string translateMorseToText(const MorseStringIterator &symbols) const;
         MorseString translateTextToMorse(const std::string text) const;

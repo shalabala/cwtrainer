@@ -1,21 +1,22 @@
-#ifndef BEEPER_H
-#define BEEPER_H
+#ifndef CWTRAINER_BEEPER_H
+#define CWTRAINER_BEEPER_H
 #include "ibeeper.h"
 #include "../morse/morse-types.h"
+#include "../configuration/configuration.h"
 #include "beeper_types.h"
 #include "SDL.h"
 #include "SDL_audio.h"
 #include <queue>
+#include <memory>
 namespace beeper
 {
     class Beeper : public IBeeper
     {
     public:
-        /**Construct the beeper class. The first parameter specifies the frequency of the beeps,
-         * the second the shortest duration of a beep or a pause
+        /**Construct the beeper class. 
          *
          */
-        Beeper(int freq, int amplitude, int dotDurationMS);
+        Beeper(std::shared_ptr<configuration::Configuration> config);
 
         /**Turns a continuos beep on
          *
@@ -31,6 +32,11 @@ namespace beeper
          *
          */
         virtual void schedule(const morse::MorseString &s) override;
+
+        /**Clears the scheduled beeps;
+         *
+         */
+        virtual void clearSchedule() override;
 
         /**Waits until the scheduled queue is empty
          *
@@ -63,7 +69,7 @@ namespace beeper
          */
         const int dotDurationMS;
 
-        /** Number of generated samples so far (reset after each beep to 0)
+        /** Input variable for the wave generation. Reset after each sampling to be equal to <old value> % sampling
          *
          */
         int t;
@@ -122,11 +128,14 @@ namespace beeper
         }
 
         /**Duration of the silence after a word expressed in number of samples
+         * Its value is only 1, since every word end char is always preceded by, and followed by
+         * a letter end character. This means that the full value of a word end char will be 3+1+3,
+         * as per specification.
          *
          */
         int wordEndDuration()
         {
-            return dotDuration() * 7;
+            return dotDuration() * 1;
         }
 
         /** Gets the instantaneous amplitude of the sine wave based on the sample count,
