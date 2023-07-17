@@ -102,7 +102,7 @@ namespace presenter
         std::shared_ptr<configuration::Configuration> configuration;
         std::shared_ptr<dictionary::Dictionary> dict;
 
-        const int numberOfTokensGeneratedAtOnce = 100;
+        const int numberOfTokensGeneratedAtOnce = 5;
     };
 }
 
