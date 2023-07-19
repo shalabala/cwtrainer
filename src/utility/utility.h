@@ -43,6 +43,11 @@ namespace cw_utility
     */
     bool tryPreprocessAscii(char c, char &res);
 
+    /** Is the character valid, morse convertible ascii char
+     * 
+    */
+    bool isValidAscii(char c);
+
 } // namespace cwUtility
 
 #endif

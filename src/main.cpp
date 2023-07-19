@@ -10,11 +10,10 @@
 #include <iostream>
 #include <string>
 namespace di = boost::di;
+
 class App
 {
 public:
-    App(App&& other) = delete;
-    App(App& other) = delete;
     App(std::shared_ptr<display::MainWindow> displayWindow,
         std::shared_ptr<configuration::Configuration> config) : displayWindow(displayWindow),
                                                                 config(config)
@@ -54,5 +53,5 @@ int main(int argc, char **argv)
         di::bind<beeper::IBeeper>.to<beeper::Beeper>());
 
     
-    return injector.create<App*>()->start(argc,argv,app);
+    return injector.create<std::shared_ptr<App>>()->start(argc,argv,app);
 }
