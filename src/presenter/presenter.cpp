@@ -35,7 +35,7 @@ namespace presenter
     {
         return stateFlags;
     }
-   
+
     void Presenter::slotKeyPressed(InputState state)
     {
         if (state == backspacePressed)
@@ -82,7 +82,6 @@ namespace presenter
                 change.charsToHighlight = 1;
                 change.areCorrect = true;
                 ++tokenCharsIndex;
-                prepareNextTokenIfNeeded();
             }
         }
         else if (s == morse::letterEnd)
@@ -106,7 +105,6 @@ namespace presenter
 
                 ++tokenCharsIndex;
                 cw_utility::clear(currentLetter);
-                prepareNextTokenIfNeeded();
             }
         }
         else
@@ -116,15 +114,18 @@ namespace presenter
 
         change.textToAppendToMorse = morse;
         emit displayChange(change);
+        if(change.charsToHighlight>0){
+            prepareNextTokenIfNeeded();
+        }
     }
 
     void Presenter::refillInputTokensIfNeeded()
     {
         if (tokens.size() <= tokensIndex)
         {
-            tokensIndex = 0;
             auto newTokens = dict->getNextTokens(numberOfTokensGeneratedAtOnce);
             std::string joinedString = boost::algorithm::join(newTokens, " ");
+            joinedString += " ";
             DisplayChange change;
             change.textAppendToWords = joinedString;
             emit displayChange(change);
@@ -138,7 +139,7 @@ namespace presenter
     void Presenter::initiateHelpFunction()
     {
         const std::lock_guard lock(beeperLock);
-        const std::string& currentToken = getCurrentToken();
+        const std::string &currentToken = getCurrentToken();
         morse::MorseString translation = translate.translateTextToMorse(currentToken);
         beeper->clearSchedule();
         beeper->schedule(translation);
@@ -174,9 +175,9 @@ namespace presenter
         prepareNextTokenIfNeeded();
     }
 
-    const std::string& Presenter::getCurrentToken()
+    const std::string &Presenter::getCurrentToken()
     {
-        return tokens[tokensIndex-1];
+        return tokens[tokensIndex - 1];
     }
 
     void Presenter::prepareNextTokenIfNeeded()

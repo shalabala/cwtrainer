@@ -16,6 +16,11 @@ include_directories(${SDL2_INCLUDE_DIRS})
 #------------qt
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 
+#------------boost::ext-di
+add_library(di STATIC "../lib/boost/di.hpp")
+target_include_directories(di PUBLIC "../lib/boost")
+target_compile_features(di PUBLIC cxx_std_17)
+
 #------------boost
 find_package(Boost REQUIRED)
 include_directories( ${Boost_INCLUDE_DIR} )
@@ -69,8 +74,8 @@ target_link_libraries(configuration PUBLIC utility ${Boost_LIBRARIES})
 target_link_libraries(beeper PUBLIC morse ${SDL2_LIBRARIES})
 target_link_libraries(dictionary PUBLIC configuration)
 target_link_libraries(presenter PUBLIC beeper utility configuration dictionary Qt5::Core ${Boost_LIBRARIES})
-target_link_libraries(display PUBLIC beeper presenter Qt5::Core Qt5::Gui Qt5::Widgets)
-target_link_libraries(cwtrainer PUBLIC presenter display configuration dictionary beeper)
+target_link_libraries(display PUBLIC beeper presenter Qt5::Core Qt5::Gui Qt5::Widgets di)
+target_link_libraries(cwtrainer PUBLIC presenter display configuration dictionary beeper di)
 
 
 #------------TESTS

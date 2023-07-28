@@ -9,32 +9,49 @@
 #include <memory>
 #include <iostream>
 #include <string>
+namespace di = boost::di;
+
+class App
+{
+public:
+    App(std::shared_ptr<display::MainWindow> displayWindow,
+        std::shared_ptr<configuration::Configuration> config) : displayWindow(displayWindow),
+                                                                config(config)
+    {
+    }
+    int start(int argc, char **argv, QApplication &app)
+    {
+        if (argc == 2)
+        {
+            std::string firstArg(argv[1]);
+            if(firstArg == "-e"){
+                config->set<configuration::defaultDifficulty>(configuration::easy);
+                std::cout << "Difficulty set to easy" << std::endl;
+            }else if(firstArg =="-m"){
+                config->set<configuration::defaultDifficulty>(configuration::medium);
+                std::cout << "Difficulty set to medium" << std::endl;
+            }else if(firstArg =="-h"){
+                config->set<configuration::defaultDifficulty>(configuration::hard);
+                std::cout << "Difficulty set to hard" << std::endl;
+            }
+        }
+
+        displayWindow->show();
+        return app.exec();
+    }
+
+private:
+    std::shared_ptr<display::MainWindow> displayWindow;
+    std::shared_ptr<configuration::Configuration> config;
+};
 
 int main(int argc, char **argv)
 {
-    std::shared_ptr<configuration::Configuration> config = std::make_shared<configuration::Configuration>();
-
-    if (argc == 2)
-    {
-        std::string firstArg(argv[1]);
-        if(firstArg == "-e"){
-            config->set<configuration::defaultDifficulty>(configuration::easy);
-            std::cout << "Difficulty set to easy" << std::endl;
-        }else if(firstArg =="-m"){
-            config->set<configuration::defaultDifficulty>(configuration::medium);
-            std::cout << "Difficulty set to medium" << std::endl;
-        }else if(firstArg =="-h"){
-            config->set<configuration::defaultDifficulty>(configuration::hard);
-            std::cout << "Difficulty set to hard" << std::endl;
-        }
-    }
     QApplication app(argc, argv);
-    std::shared_ptr<dictionary::Dictionary> dictionary =
-        std::make_shared<dictionary::Dictionary>(config);
-    std::shared_ptr<beeper::IBeeper> beeper = std::make_shared<beeper::Beeper>(config);
-    std::shared_ptr<presenter::Presenter> present = std::make_shared<presenter::Presenter>(config, dictionary, beeper);
-    display::MainWindow window(present, config);
 
-    window.show();
-    return app.exec();
+    auto injector = di::make_injector(
+        di::bind<beeper::IBeeper>.to<beeper::Beeper>());
+
+    
+    return injector.create<std::shared_ptr<App>>()->start(argc,argv,app);
 }

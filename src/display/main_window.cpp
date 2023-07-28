@@ -12,6 +12,11 @@ namespace conf = configuration;
 namespace display
 {
     MainWindow::MainWindow(std::shared_ptr<presenter::Presenter> presenter,
+                           std::shared_ptr<configuration::Configuration> configuration) : MainWindow(presenter, configuration, nullptr)
+    {
+    }
+
+    MainWindow::MainWindow(std::shared_ptr<presenter::Presenter> presenter,
                            std::shared_ptr<configuration::Configuration> configuration, QWidget *parent) : QWidget(parent),
                                                                                                            presenter(presenter),
                                                                                                            configuration(configuration)
@@ -97,6 +102,14 @@ namespace display
         {
             int i = displayArea->textCursor().position();
             displayArea->insertPlainText(change.textAppendToWords.c_str());
+            int end = i + change.textAppendToWords.length();
+            QTextCharFormat fmt;
+            fmt.setBackground(Qt::white);
+
+            QTextCursor cursor(displayArea->document());
+            cursor.setPosition(i, QTextCursor::MoveAnchor);
+            cursor.setPosition(end, QTextCursor::KeepAnchor);
+            cursor.setCharFormat(fmt);
             setTextCursorPosition(i);
         }
         if (!change.textToAppendToMorse.empty())

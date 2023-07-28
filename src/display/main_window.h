@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <memory>
+#include "../../lib/boost/di.hpp"
 
 namespace display
 {
@@ -18,7 +19,10 @@ namespace display
     public:
         explicit MainWindow(std::shared_ptr<presenter::Presenter> presenter,
                             std::shared_ptr<configuration::Configuration> configuration,
-                            QWidget *parent = nullptr);
+                            QWidget *parent);
+
+        BOOST_DI_INJECT(MainWindow, std::shared_ptr<presenter::Presenter> presenter,
+                            std::shared_ptr<configuration::Configuration> configuration);
 
     protected:
         void keyPressEvent(QKeyEvent *event) override;
